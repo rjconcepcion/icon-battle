@@ -1,0 +1,92 @@
+<app-loader [showloader]="showloader"></app-loader>
+<!-- BUTTON -->
+<div id="btn-controller" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">CREATE NEW</button> -->
+        <button type="button" class="btn btn-success" (click)="openModal(template)">CREATE</button>
+      </div>
+    </div>
+</div>
+<!-- MODAL -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">CREATE NEW ICON</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="disabledTextInput">Font awsome icon code</label>
+        <input type="text" class="form-control" placeholder="fa-code" #iconName>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-success" (click)="add(iconName.value)">Save changes</button>
+    </div>
+    </div>
+  </div>
+</div> -->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="disabledTextInput">Font awsome icon code</label>
+      <input type="text" class="form-control" placeholder="fa-code" #iconName required>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-success" (click)="add(iconName.value)">Save changes</button>
+  </div>  
+</ng-template>
+
+<!-- LIST OF RECORDS -->
+<div class="container">
+  <div class="row">
+    <div *ngFor="let icon of icons" class="character col-md-2 col-sm-3">
+        <div class="player-icon">
+            <i class="fa {{icon.name}}" aria-hidden="true"></i>
+        </div>
+        <div class="stats-wrap">
+          <p>
+            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            <span class="bar">
+                <div class="bar-content" [ngStyle]="{ 'width': icon.hp + '0%'}"></div>
+            </span>          
+          </p>
+          <p>
+            <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
+            <span class="bar">
+                <div class="bar-content" [ngStyle]="{ 'width': icon.rock + '0%'}"></div>
+            </span>
+          </p>
+          <p>
+            <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+            <span class="bar">
+                <div class="bar-content" [ngStyle]="{ 'width': icon.paper + '0%'}"></div>
+            </span>          
+          </p>          
+          <p>
+            <i class="fa fa-hand-scissors-o" aria-hidden="true"></i>
+            <span class="bar">
+                <div class="bar-content" [ngStyle]="{ 'width': icon.scissor + '0%'}"></div>
+            </span>
+          </p>
+        </div>
+        <div class="fllr">
+          <button class="btn btn-success">SELECT</button>
+          <button class="btn btn-danger">DELETE</button>
+        </div>
+    </div>
+  </div>
+</div>

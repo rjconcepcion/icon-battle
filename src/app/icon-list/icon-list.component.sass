@@ -1,0 +1,46 @@
+.character
+    position: relative
+    margin-bottom:20px
+    .player-icon
+        text-align: center
+        i
+            font-size: 130px
+    .stats-wrap
+        margin-top:13px
+        p
+            display: flex
+            justify-content: space-between
+            align-items: center            
+            margin-bottom: 3px
+            &:last-of-type 
+                margin-bottom:0
+            .bar
+                width: calc(100% - 40px)
+                background-color: #343a40
+                height: 15px
+                padding: 4px 3px
+                .bar-content
+                    background: #fff
+                    left: 4px
+                    height: 100%
+                    background-color: rgba(255, 255, 255, 0.5)
+            i
+                font-size: 26px
+    .fllr
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background-color: rgba(255, 255, 255, 0.82)
+        opacity: 0
+        display: flex
+        align-items: center
+        justify-content: space-evenly
+        flex-flow: column        
+        -webkit-transition: all .3s ease-in-out
+        -moz-transition: all .3s ease-in-out
+        -o-transition: all .3s ease-in-out
+        transition: all .3s ease-in-out        
+        &:hover
+            opacity: 1

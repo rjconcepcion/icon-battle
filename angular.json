@@ -27,7 +27,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.sass",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": []
           },
@@ -87,6 +89,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.sass"
             ],
             "scripts": []
@@ -118,6 +121,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "icon-battle"
 }
