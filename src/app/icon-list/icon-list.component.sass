@@ -1,11 +1,24 @@
+@mixin transition($duration)
+    -webkit-transition: $duration
+    -moz-transition: $duration
+    -ms-transition: $duration
+    -o-transition: $duration
+    transition: $duration
+
+
+#btn-controller
+    margin-bottom:40px
 .character
     position: relative
     margin-bottom:20px
+    padding-top: 10px
     .player-icon
+        @include transition(.3s)
         text-align: center
         i
             font-size: 130px
     .stats-wrap
+        @include transition(.3s)
         margin-top:13px
         p
             display: flex
@@ -38,9 +51,13 @@
         align-items: center
         justify-content: space-evenly
         flex-flow: column        
-        -webkit-transition: all .3s ease-in-out
-        -moz-transition: all .3s ease-in-out
-        -o-transition: all .3s ease-in-out
-        transition: all .3s ease-in-out        
-        &:hover
+        @include transition(.3s)
+    &:hover
+        .player-icon
+            filter: blur(3px)
+        .stats-wrap
+            filter: blur(3px)
+        .fllr
             opacity: 1
+
+   

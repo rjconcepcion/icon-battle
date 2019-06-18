@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { Icon } from  '../Icon';
 import { IconService } from '../icon.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -9,6 +9,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./icon-list.component.sass']
 })
 export class IconListComponent implements OnInit {
+  value : string = '';
   icons : Icon[];
   showloader : boolean;
   modalRef: BsModalRef;
@@ -16,7 +17,7 @@ export class IconListComponent implements OnInit {
   constructor(private iconService: IconService, private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.getIcons();    
+    this.getIcons();  
   }
   getIcons(): void {
     console.log('starting');
@@ -48,7 +49,16 @@ export class IconListComponent implements OnInit {
       this.icons.push(icon);
     });
   }  
+  deleteIcon(_id: string): void{
+    console.log(_id);
+  }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+
+        this.modalService.onHidden.subscribe((reason: string) => {
+          
+          this.value = '';
+        })
+
   }
 }
