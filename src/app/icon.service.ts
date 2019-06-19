@@ -22,7 +22,7 @@ export class IconService {
   constructor(private http: HttpClient) { }
 
   getIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list?totals=true&max=3&skip=0`;
+    const url = `${environment.endpoint}icon-list?totals=true&max=3&skip=6`;
     return this.http.get<Icon[]>(url,httpOptions)
   } 
 

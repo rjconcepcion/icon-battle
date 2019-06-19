@@ -17,10 +17,18 @@ export class IconListComponent implements OnInit {
 
   totalItems : number;
   maxSize : number;
-  bigCurrentPage : number = 0;
+  itemsPerPage : number;
+  currentPage : number;
+  page : number = 1;
+  skip : number = 0;
+
 
   constructor(private iconService: IconService, private modalService: BsModalService) { }
+  pageChanged(event: any): void {
 
+ 
+    this.skip = (event.page - 1) * 3
+  }
   ngOnInit() {
     this.getIcons();  
   }
@@ -31,8 +39,9 @@ export class IconListComponent implements OnInit {
       (response: any) =>{
         console.log(response);
         this.icons = response.data;
-        this.totalItems = response.totals.total;
-        this.maxSize = response.totals.max;
+        this.totalItems = 7;
+        // this.maxSize = response.totals.max;
+        this.itemsPerPage = 3;
       },
       // icons => {
 
