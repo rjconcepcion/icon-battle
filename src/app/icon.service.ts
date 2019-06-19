@@ -22,14 +22,14 @@ export class IconService {
   constructor(private http: HttpClient) { }
 
   getIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list?`;
+    const url = `${environment.endpoint}icon-list?totals=true&max=3&skip=0`;
     return this.http.get<Icon[]>(url,httpOptions)
   } 
 
-  nextIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list?&max=1&skip=0`;
-    return this.http.get<Icon[]>(url,httpOptions)
-  }  
+  // nextIcons (): Observable<Icon[]> {
+  //   const url = `${environment.endpoint}icon-list?&max=1&skip=0`;
+  //   return this.http.get<Icon[]>(url,httpOptions)
+  // }  
 
   searchIcon (term: string): Observable<Icon[]>{
     

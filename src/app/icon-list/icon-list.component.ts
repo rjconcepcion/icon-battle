@@ -15,6 +15,26 @@ export class IconListComponent implements OnInit {
   showloader : boolean;
   modalRef: BsModalRef;
 
+  totalItems : number;
+  maxSize : number;
+  // page : number = 2;
+  // total : number = 10;
+  // limit : number = 3;
+
+// 1
+1// 2
+// 3
+
+// 4
+2// 5
+// 6
+
+// 7
+3// 8
+// 9
+
+4// 10
+
   constructor(private iconService: IconService, private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -24,9 +44,18 @@ export class IconListComponent implements OnInit {
     this.showloader = true;
     this.iconService.getIcons()
     .subscribe(
-      icons => {
-        this.icons = icons;
+      (response: any) =>{
+        console.log(response);
+        this.icons = response.data;
+        this.totalItems = response.totals.total;
+        this.maxSize = response.totals.max;
       },
+      // icons => {
+
+      //   console.log(icons.data);
+
+      //   //this.icons = icons.data;
+      // },
       (error: any) => {
         console.log(error);
       },

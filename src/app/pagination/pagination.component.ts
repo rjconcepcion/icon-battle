@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Icon } from  '../Icon';
-import { IconService } from '../icon.service';
+
 
 @Component({
   selector: 'app-pagination',
@@ -8,28 +7,24 @@ import { IconService } from '../icon.service';
   styleUrls: ['./pagination.component.sass']
 })
 export class PaginationComponent implements OnInit {
+  @Input() totalItems : number;
+  @Input() maxSize : number;
+  constructor() { }
 
-  constructor(private iconService: IconService) { }
-  @Output() icons = new EventEmitter<Icon>();
-  current_page : number = 0;
-
-  next() : void {
-
-    this.iconService.nextIcons()
-    .subscribe(
-      icons => {
-        // this.icons.emit(this.icons);
-      },
-      (error: any) => {
-        console.log(error);
-      },
-      () => {
-        console.log(this);
-      }
-    );
-  }
-  
   ngOnInit() {
   }
 
 }
+// 1 #0
+// 2 #1
+// 3 #2
+
+// 4 #3
+// 5 #4
+// 6 #5
+
+// 7 #6
+// 8 #7
+// 9 #6
+
+// 10 #7
