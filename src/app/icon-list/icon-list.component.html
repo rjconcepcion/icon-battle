@@ -3,8 +3,17 @@
 <div id="btn-controller" class="container">
     <div class="row">
       <div class="col-md-12">
+          <div class="action-outer-wrap">
         <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">CREATE NEW</button> -->
-        <button type="button" class="btn btn-success" (click)="openModal(template)">CREATE</button>
+            <button type="button" class="btn btn-success" (click)="openModal(template)">CREATE</button>
+
+            <div class="search-wrap active">
+              <input type="text" class="form-control" placeholder="Search icon name..." [(ngModel)]="this.searchedName" #nameIcon>
+              <button type="button" class="btn btn-success" (click)="findIcon(nameIcon.value)">Search</button>
+              <button type="button" class="btn btn-warning" (click)="getIcons()">Show all</button>
+            </div>            
+          </div>
+
       </div>
     </div>
 </div>
@@ -59,40 +68,44 @@
 <!-- LIST OF RECORDS -->
 <div class="container">
   <div class="row">
-    <div *ngFor="let icon of icons" class="character col-md-2 col-sm-3">
-        <div class="player-icon">
-            <i class="fa {{icon.name}}" aria-hidden="true"></i>
-        </div>
-        <div class="stats-wrap">
-          <p>
-            <i class="fa fa-heartbeat" aria-hidden="true"></i>
-            <span class="bar">
-                <div class="bar-content" [ngStyle]="{ 'width': icon.hp + '0%'}"></div>
-            </span>          
-          </p>
-          <p>
-            <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
-            <span class="bar">
-                <div class="bar-content" [ngStyle]="{ 'width': icon.rock + '0%'}"></div>
-            </span>
-          </p>
-          <p>
-            <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
-            <span class="bar">
-                <div class="bar-content" [ngStyle]="{ 'width': icon.paper + '0%'}"></div>
-            </span>          
-          </p>          
-          <p>
-            <i class="fa fa-hand-scissors-o" aria-hidden="true"></i>
-            <span class="bar">
-                <div class="bar-content" [ngStyle]="{ 'width': icon.scissor + '0%'}"></div>
-            </span>
-          </p>
-        </div>
-        <div class="fllr">
-          <button class="btn btn-success">SELECT</button>
-          <button class="btn btn-danger" (click)="deleteIcon(icon._id)">DELETE</button>
+    <div *ngFor="let icon of icons" class="character col-md-r col-sm-3">
+        <div class="inner-wrap">
+          <div class="player-icon">
+              <i class="fa {{icon.name}}" aria-hidden="true"></i>
+              <pre>{{icon.name}}</pre>
+          </div>
+          <div class="stats-wrap">
+            <p>
+              <i class="fa fa-heartbeat" aria-hidden="true"></i>
+              <span class="bar">
+                  <div class="bar-content" [ngStyle]="{ 'width': icon.hp + '0%'}"></div>
+              </span>          
+            </p>
+            <p>
+              <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
+              <span class="bar">
+                  <div class="bar-content" [ngStyle]="{ 'width': icon.rock + '0%'}"></div>
+              </span>
+            </p>
+            <p>
+              <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+              <span class="bar">
+                  <div class="bar-content" [ngStyle]="{ 'width': icon.paper + '0%'}"></div>
+              </span>          
+            </p>          
+            <p>
+              <i class="fa fa-hand-scissors-o" aria-hidden="true"></i>
+              <span class="bar">
+                  <div class="bar-content" [ngStyle]="{ 'width': icon.scissor + '0%'}"></div>
+              </span>
+            </p>
+          </div>
+          <div class="fllr">
+            <button class="btn btn-success" (click)="temp()">SELECT</button>
+            <button class="btn btn-danger" (click)="delete(icon)">DELETE</button>
+          </div>          
         </div>
     </div>
   </div>
 </div>
+<!-- <app-pagination></app-pagination> -->

@@ -9,6 +9,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./icon-list.component.sass']
 })
 export class IconListComponent implements OnInit {
+  searchedName : string = '';
   value : string = '';
   icons : Icon[];
   showloader : boolean;
@@ -20,12 +21,27 @@ export class IconListComponent implements OnInit {
     this.getIcons();  
   }
   getIcons(): void {
-    console.log('starting');
+    this.showloader = true;
     this.iconService.getIcons()
     .subscribe(
       icons => {
         this.icons = icons;
       },
+      (error: any) => {
+        console.log(error);
+      },
+      () => {
+        this.searchedName = "";
+        this.showloader = false;
+      }
+    );
+  }
+  findIcon(name: string): void {
+    this.showloader = true;
+    this.iconService.searchIcon(name).subscribe(
+      icons => {
+        this.icons = icons;
+      }, 
       (error: any) => {
         console.log(error);
       },
@@ -49,16 +65,26 @@ export class IconListComponent implements OnInit {
       this.icons.push(icon);
     });
   }  
-  deleteIcon(_id: string): void{
-    console.log(_id);
+  delete(icon: Icon): void{
+    this.showloader = true;
+    this.icons = this.icons.filter(h => h !== icon);
+    this.iconService.deleteIcon(icon).subscribe(
+      () => {},    
+      (error: any) => {
+        console.log(error);
+      },
+      () => {
+        this.showloader = false;
+      }
+    );
   }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
-
         this.modalService.onHidden.subscribe((reason: string) => {
-          
           this.value = '';
         })
-
+  }
+  temp() : void {
+    alert('coming soon');
   }
 }

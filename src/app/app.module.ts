@@ -13,6 +13,7 @@ import { LoaderComponent } from './loader/loader.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     TestModalComponent,
     HeaderComponent,
     IconListComponent,
-    LoaderComponent
+    LoaderComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

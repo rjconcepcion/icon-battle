@@ -22,13 +22,34 @@ export class IconService {
   constructor(private http: HttpClient) { }
 
   getIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list`;
+    const url = `${environment.endpoint}icon-list?`;
     return this.http.get<Icon[]>(url,httpOptions)
   } 
+
+  nextIcons (): Observable<Icon[]> {
+    const url = `${environment.endpoint}icon-list?&max=1&skip=0`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  }  
+
+  searchIcon (term: string): Observable<Icon[]>{
+    
+    if (!term.trim()) {
+      const url = `${environment.endpoint}icon-list`;
+      return this.http.get<Icon[]>(url,httpOptions)
+    }
+    const url = `${environment.endpoint}icon-list?q={"name":{"$regex" : "${term.trim()}"}}`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  }
 
   addIcon (icon: Icon): Observable<Icon> {
     const url = `${environment.endpoint}icon-list`;
     return this.http.post<Icon>(url, icon, httpOptions);
+  }
+
+  deleteIcon (icon: Icon | string): Observable<Icon> {
+    const id = typeof icon === 'string' ? icon : icon._id;
+    const url = `${environment.endpoint}icon-list/${id}`;
+    return this.http.delete<Icon>(url, httpOptions);
   }
 
   rand ( min : number,max : number):  number {

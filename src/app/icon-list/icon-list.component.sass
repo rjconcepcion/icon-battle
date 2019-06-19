@@ -4,60 +4,90 @@
     -ms-transition: $duration
     -o-transition: $duration
     transition: $duration
-
-
 #btn-controller
-    margin-bottom:40px
+    margin-bottom:40px    
+    .action-outer-wrap
+        display: flex
+        align-items: baseline
+        justify-content: space-between  
+        .search-wrap
+            display: flex
+            input
+                outline: none
+                border-top-right-radius: 0
+                border-bottom-right-radius: 0                
+                &:focus
+                    border: 1px solid #ced4da
+                    box-shadow: none
+            button
+                border-top-left-radius: 0
+                border-bottom-left-radius: 0  
+                &:focus
+                    box-shadow: none
+            &.active
+                .btn-success
+                    border-radius: 0  
+
 .character
     position: relative
-    margin-bottom:20px
-    padding-top: 10px
-    .player-icon
-        @include transition(.3s)
-        text-align: center
-        i
-            font-size: 130px
-    .stats-wrap
-        @include transition(.3s)
-        margin-top:13px
-        p
-            display: flex
-            justify-content: space-between
-            align-items: center            
-            margin-bottom: 3px
-            &:last-of-type 
-                margin-bottom:0
-            .bar
-                width: calc(100% - 40px)
-                background-color: #343a40
-                height: 15px
-                padding: 4px 3px
-                .bar-content
-                    background: #fff
-                    left: 4px
-                    height: 100%
-                    background-color: rgba(255, 255, 255, 0.5)
-            i
-                font-size: 26px
-    .fllr
-        position: absolute
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
-        background-color: rgba(255, 255, 255, 0.82)
-        opacity: 0
-        display: flex
-        align-items: center
-        justify-content: space-evenly
-        flex-flow: column        
-        @include transition(.3s)
-    &:hover
+    margin:25px 0
+    .inner-wrap
+        max-width: 190px
+        margin-left: auto
+        margin-right: auto
+        position: relative
         .player-icon
-            filter: blur(3px)
+            @include transition(.3s)
+            display: flex
+            flex-flow: column
+            align-items: center        
+            i
+                font-size: 130px
+            pre
+                margin-top: 13px
+                background-color: #ccc
+                display: inline-block
+                padding: 3px 5px     
         .stats-wrap
-            filter: blur(3px)
+            @include transition(.3s)
+            p
+                display: flex
+                justify-content: space-between
+                align-items: center            
+                margin-bottom: 3px
+                &:last-of-type 
+                    margin-bottom:0
+                .bar
+                    width: calc(100% - 40px)
+                    background-color: #343a40
+                    height: 15px
+                    padding: 4px 3px
+                    .bar-content
+                        background: #fff
+                        left: 4px
+                        height: 100%
+                        background-color: rgba(255, 255, 255, 0.5)
+                i
+                    font-size: 26px
         .fllr
-            opacity: 1
+            position: absolute
+            top: -6px
+            left: -7px
+            right: -7px
+            bottom: -2px
+            background-color: rgba(255, 255, 255, 0.82)
+            opacity: 0
+            display: flex
+            align-items: center
+            justify-content: space-evenly
+            flex-flow: column        
+            @include transition(.3s)
+        &:hover
+            .player-icon
+                filter: blur(3px)
+            .stats-wrap
+                filter: blur(3px)
+            .fllr
+                opacity: 1
 
-   
+    
