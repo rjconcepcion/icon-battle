@@ -108,4 +108,7 @@
     </div>
   </div>
 </div>
-<pagination [totalItems]="bigTotalItems" [(ngModel)]="bigCurrentPage" [maxSize]="maxSize"></pagination>
+<pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>
+<pre class="card card-block card-header mb-3">
+  Page changed to: {{skip}}
+</pre>
