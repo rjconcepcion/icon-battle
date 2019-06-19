@@ -17,23 +17,7 @@ export class IconListComponent implements OnInit {
 
   totalItems : number;
   maxSize : number;
-  // page : number = 2;
-  // total : number = 10;
-  // limit : number = 3;
-
-// 1
-1// 2
-// 3
-
-// 4
-2// 5
-// 6
-
-// 7
-3// 8
-// 9
-
-4// 10
+  bigCurrentPage : number = 0;
 
   constructor(private iconService: IconService, private modalService: BsModalService) { }
 
