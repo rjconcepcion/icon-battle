@@ -1,4 +1,5 @@
 <app-loader [showloader]="showloader" [texty]="texty"></app-loader>
+<app-header [creator]="creator" ></app-header>
 <!-- BUTTON -->
 <div id="btn-controller" class="container">
     <div class="row">
@@ -50,6 +51,9 @@
   <div class="modal-body">
     <div class="form-group">
 
+      <label for="disabledTextInput">Enter your bravest name!</label>
+      <input type="text" class="form-control"  [(ngModel)]="this.candidate_creator" >
+      <br>
 <!-- <input id="name" name="name" class="form-control"
       required minlength="4" appForbiddenName="bob"
       [(ngModel)]="hero.name" #name="ngModel" > -->

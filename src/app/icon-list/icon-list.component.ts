@@ -29,7 +29,8 @@ export class IconListComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-
+  candidate_creator : string = null;
+  creator : string = null;
 
 // 1 0 0
 // 2 1 3
@@ -46,6 +47,7 @@ export class IconListComponent implements OnInit {
   pageChanged(event: any): void {
     this.showloader = true;
     this.skip = (event.page - 1) * environment.maxIcon;
+    this.currentPage = event.page
     this.iconService.paginateIcons(this.skip)
     .subscribe(
       (response: any) =>{
@@ -94,21 +96,40 @@ export class IconListComponent implements OnInit {
       }
     );
   }
+
   add(name: string): void {
-    this.showloader = true;
-    this.iconService.addIcon({
-      name : name.trim(),
-      hp: this.iconService.rand(8,10),
-      rock:this.iconService.rand(4,9),
-      paper:this.iconService.rand(4,9),
-      scissor:this.iconService.rand(4,9),
-    } as Icon)
-    .subscribe(icon => {
-      this.modalRef.hide();
-      this.showloader = false;
-      this.icons.unshift(icon);
-    });
+
+    if(this.creator === null){
+      sessionStorage.setItem('creator', this.candidate_creator);
+      this.creator = sessionStorage.getItem('creator');
+    }
+
+   // console.log(this.creator);
+
+    // console.log(data);
+
+    // this.showloader = true;
+    // if(this.currentPage > 1){
+    //   this.currentPage = 1;
+    // }
+    // this.iconService.addIcon({
+    //   name : name.trim(),
+    //   hp: this.iconService.rand(8,10),
+    //   rock:this.iconService.rand(4,9),
+    //   paper:this.iconService.rand(4,9),
+    //   scissor:this.iconService.rand(4,9),
+    // } as Icon)
+    // .subscribe((response: any) => {
+    //   if(this.currentPage === 1){
+    //     this.icons.unshift(response);
+    //     this.icons.pop();
+    //   }
+    //   this.modalRef.hide()
+    //   this.totalItems += 1;
+    //   this.showloader = false;
+    // })
   }  
+  
   delete(icon: Icon): void{
     this.showloader = true;
     this.texty = "Deleting the icon :-(";
