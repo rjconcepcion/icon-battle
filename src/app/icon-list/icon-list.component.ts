@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { Icon } from  '../Icon';
 import { IconService } from '../icon.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-icon-list',
@@ -9,12 +10,12 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./icon-list.component.sass']
 })
 export class IconListComponent implements OnInit {
-  searchedName : string = '';
-  value : string = '';
-  icons : Icon[];
-  showloader : boolean;
-  modalRef: BsModalRef;
 
+  //Loading
+  showloader :boolean = false;
+  texty : string;
+
+  // Pagination
   totalItems : number;
   maxSize : number;
   itemsPerPage : number;
@@ -22,33 +23,54 @@ export class IconListComponent implements OnInit {
   page : number = 1;
   skip : number = 0;
 
+  searchedName : string = '';
+  value : string = '';
+  icons : Icon[];
+
+  modalRef: BsModalRef;
+
+
+
+// 1 0 0
+// 2 1 3
+// 3 2 6
 
   constructor(private iconService: IconService, private modalService: BsModalService) { }
-  pageChanged(event: any): void {
-
- 
-    this.skip = (event.page - 1) * 3
-  }
+  
+  
   ngOnInit() {
     this.getIcons();  
   }
+
+  // PAGINATION EVENTS
+  pageChanged(event: any): void {
+    this.showloader = true;
+    this.skip = (event.page - 1) * environment.maxIcon;
+    this.iconService.paginateIcons(this.skip)
+    .subscribe(
+      (response: any) =>{
+        console.log(response);
+        this.icons = response.data;
+        this.totalItems = response.totals.total;
+        this.itemsPerPage = environment.maxIcon;
+        this.showloader = false;
+      },
+      (error: any) => {
+        console.log(error);
+      },
+    );
+  }
+  
+
   getIcons(): void {
     this.showloader = true;
     this.iconService.getIcons()
     .subscribe(
       (response: any) =>{
-        console.log(response);
         this.icons = response.data;
-        this.totalItems = 7;
-        // this.maxSize = response.totals.max;
-        this.itemsPerPage = 3;
+        this.totalItems = response.totals.total;
+        this.itemsPerPage = environment.maxIcon;
       },
-      // icons => {
-
-      //   console.log(icons.data);
-
-      //   //this.icons = icons.data;
-      // },
       (error: any) => {
         console.log(error);
       },
@@ -84,19 +106,26 @@ export class IconListComponent implements OnInit {
     .subscribe(icon => {
       this.modalRef.hide();
       this.showloader = false;
-      this.icons.push(icon);
+      this.icons.unshift(icon);
     });
   }  
   delete(icon: Icon): void{
     this.showloader = true;
-    this.icons = this.icons.filter(h => h !== icon);
+    this.texty = "Deleting the icon :-(";
     this.iconService.deleteIcon(icon).subscribe(
-      () => {},    
+      (response: any) =>{
+        this.texty = "Arranging icon list & pagination...";
+        this.iconService.paginateIcons(this.skip).subscribe((response: any)=>{          
+          this.icons = this.icons.filter(h => h !== icon);
+          this.totalItems -= 1;
+          this.itemsPerPage = environment.maxIcon;          
+          this.icons = response.data;
+          this.showloader = false;
+          this.texty = '';
+        });
+      },   
       (error: any) => {
         console.log(error);
-      },
-      () => {
-        this.showloader = false;
       }
     );
   }

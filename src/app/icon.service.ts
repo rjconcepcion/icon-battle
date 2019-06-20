@@ -21,15 +21,15 @@ export class IconService {
  // private iconUrl = 'https://ngsapp-446e.restdb.io/rest/icon-list';  // URL to web api
   constructor(private http: HttpClient) { }
 
-  getIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list?totals=true&max=3&skip=6`;
+  paginateIcons (skip : number): Observable<Icon[]> {
+    const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}`;
     return this.http.get<Icon[]>(url,httpOptions)
   } 
 
-  // nextIcons (): Observable<Icon[]> {
-  //   const url = `${environment.endpoint}icon-list?&max=1&skip=0`;
-  //   return this.http.get<Icon[]>(url,httpOptions)
-  // }  
+  getIcons (): Observable<Icon[]> {
+    const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&h={"$orderby": {"fake_id": -1}}`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  } 
 
   searchIcon (term: string): Observable<Icon[]>{
     
@@ -46,10 +46,11 @@ export class IconService {
     return this.http.post<Icon>(url, icon, httpOptions);
   }
 
-  deleteIcon (icon: Icon | string): Observable<Icon> {
+  deleteIcon (icon: Icon | string): Observable<Icon[]> {
     const id = typeof icon === 'string' ? icon : icon._id;
     const url = `${environment.endpoint}icon-list/${id}`;
-    return this.http.delete<Icon>(url, httpOptions);
+    
+    return this.http.delete<Icon[]>(url, httpOptions);
   }
 
   rand ( min : number,max : number):  number {

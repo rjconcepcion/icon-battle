@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  endpoint: 'https://ngsapp-446e.restdb.io/rest/'
+  endpoint: 'https://ngsapp-446e.restdb.io/rest/',
+  maxIcon: 8,
 };
 
 /*

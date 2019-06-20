@@ -1,4 +1,4 @@
-<app-loader [showloader]="showloader"></app-loader>
+<app-loader [showloader]="showloader" [texty]="texty"></app-loader>
 <!-- BUTTON -->
 <div id="btn-controller" class="container">
     <div class="row">
@@ -108,7 +108,6 @@
     </div>
   </div>
 </div>
-<pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>
-<pre class="card card-block card-header mb-3">
-  Page changed to: {{skip}}
-</pre>
+<div id="paginate">
+  <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>  
+</div>

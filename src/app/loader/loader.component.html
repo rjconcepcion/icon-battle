@@ -1,3 +1,4 @@
-<div id="icon-loader" *ngIf="showloader" [@simpleFadeAnimation]="'in'">
+<div id="icon-loader" *ngIf="showloader" >
   <span class='fa fa-cog fa-spin'></span>
+  <p *ngIf="texty">{{texty}}</p>
 </div>

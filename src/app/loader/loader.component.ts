@@ -27,7 +27,7 @@ export class LoaderComponent implements OnInit {
   
   private _showloader : boolean;
 
-
+  @Input() texty : string;
   @Input()
   set showloader(showloader : boolean){
     this._showloader = showloader;
@@ -35,6 +35,8 @@ export class LoaderComponent implements OnInit {
   get showloader(){
     return (this._showloader === undefined || null) ? true : this._showloader;
   }
+
+  
 
   constructor() { }
 
