@@ -3,6 +3,7 @@ import { Icon } from  '../Icon';
 import { IconService } from '../icon.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { environment } from 'src/environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-icon-list',
@@ -30,14 +31,9 @@ export class IconListComponent implements OnInit {
   modalRef: BsModalRef;
 
   candidate_creator : string = null;
-  creator : string = null;
+  creator : string = this.cookieService.check('creator') ? this.cookieService.get('creator') : null;
 
-// 1 0 0
-// 2 1 3
-// 3 2 6
-
-  constructor(private iconService: IconService, private modalService: BsModalService) { }
-  
+  constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService) { }
   
   ngOnInit() {
     this.getIcons();  
@@ -97,37 +93,28 @@ export class IconListComponent implements OnInit {
     );
   }
 
-  add(name: string): void {
-
-    if(this.creator === null){
-      sessionStorage.setItem('creator', this.candidate_creator);
-      this.creator = sessionStorage.getItem('creator');
+  add(name: string): void {    
+    this.showloader = true;
+    if(this.currentPage > 1){
+      this.currentPage = 1;
     }
-
-   // console.log(this.creator);
-
-    // console.log(data);
-
-    // this.showloader = true;
-    // if(this.currentPage > 1){
-    //   this.currentPage = 1;
-    // }
-    // this.iconService.addIcon({
-    //   name : name.trim(),
-    //   hp: this.iconService.rand(8,10),
-    //   rock:this.iconService.rand(4,9),
-    //   paper:this.iconService.rand(4,9),
-    //   scissor:this.iconService.rand(4,9),
-    // } as Icon)
-    // .subscribe((response: any) => {
-    //   if(this.currentPage === 1){
-    //     this.icons.unshift(response);
-    //     this.icons.pop();
-    //   }
-    //   this.modalRef.hide()
-    //   this.totalItems += 1;
-    //   this.showloader = false;
-    // })
+    this.iconService.addIcon({
+      name : name.trim(),
+      hp: this.iconService.rand(8,10),
+      rock:this.iconService.rand(4,9),
+      paper:this.iconService.rand(4,9),
+      scissor:this.iconService.rand(4,9),
+    } as Icon)
+    .subscribe((response: any) => {
+      if(this.currentPage === 1){
+        this.icons.unshift(response);
+        this.icons.pop();
+      }
+      this.modalRef.hide()
+      this.totalItems += 1;
+      this.showloader = false;
+      this._setCreator();
+    })
   }  
   
   delete(icon: Icon): void{
@@ -156,7 +143,12 @@ export class IconListComponent implements OnInit {
           this.value = '';
         })
   }
-  temp() : void {
-    alert('coming soon');
+  _setCreator () : void {
+    if(this.creator === null){
+      this.cookieService.set( 'creator', this.candidate_creator );
+      this.creator = this.cookieService.get('creator');
+    }
   }
+
+
 }

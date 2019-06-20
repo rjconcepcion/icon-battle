@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from './pagination/pagination.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 
+import { CookieService } from 'ngx-cookie-service';
+import { BattleComponent } from './battle/battle.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     HeaderComponent,
     IconListComponent,
     LoaderComponent,
-    PaginationComponent
+    PaginationComponent,
+    BattleComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     FormsModule,
     PaginationModule.forRoot(),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

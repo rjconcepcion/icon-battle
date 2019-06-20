@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-header',
@@ -14,10 +15,10 @@ export class HeaderComponent implements OnInit {
 
   
 
-  constructor() { }
+  constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
-    this.creator = sessionStorage.getItem('creator');
+    this.creator = this.cookieService.get('creator');
   }
 
 }

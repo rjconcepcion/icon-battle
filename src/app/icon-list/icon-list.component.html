@@ -50,9 +50,10 @@
   </div>
   <div class="modal-body">
     <div class="form-group">
-
-      <label for="disabledTextInput">Enter your bravest name!</label>
-      <input type="text" class="form-control"  [(ngModel)]="this.candidate_creator" >
+      <div *ngIf="!creator">
+          <label for="disabledTextInput">Enter your bravest name!</label>
+          <input type="text" class="form-control"  [(ngModel)]="this.candidate_creator" >        
+      </div>
       <br>
 <!-- <input id="name" name="name" class="form-control"
       required minlength="4" appForbiddenName="bob"
