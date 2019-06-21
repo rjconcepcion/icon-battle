@@ -5,8 +5,7 @@ import { BattleComponent } from './battle/battle.component';
 
 const routes: Routes = [
   { path: '', component: IconListComponent },
-  // { path: '', redirectTo: 'home', pathMatch : 'full' },
-  { path: 'battle/:iconId', component: BattleComponent }
+  { path: 'battle/:fakeIconId', component: BattleComponent }
 ];
 
 @NgModule({

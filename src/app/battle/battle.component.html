@@ -1,4 +1,75 @@
 <app-header [creator]="creator" ></app-header>
-<p>
-  battle works!
-</p>
+
+<div class="container" >
+  <div class="row">
+    <div class="col-md-6">
+      <div class="icon-wrap">
+        <div class="top-section">          
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <span><b>{{creator}}</b> <pre>{{icon.name}}</pre></span>
+        </div>
+
+        <div class="icon-warrior">
+          <div class="icon-wrap">
+            <span class="fa {{icon.name}}"></span>
+
+            <div class="controls">
+              <div class="btn-wrap">
+                  <button (click)="creatorAtk(0)">
+                      
+                      <span class="fa fa-hand-rock-o"></span>
+                  </button>
+                  <pre>DMG: {{icon.rock}}</pre>
+              </div>              
+              <div class="btn-wrap">
+                  <button (click)="creatorAtk(1)">                     
+                      <span class="fa fa-hand-paper-o"></span>
+                  </button>
+                  <pre>DMG: {{icon.paper}}</pre>
+              </div>
+              <div class="btn-wrap">
+                  <button (click)="creatorAtk(2)">                      
+                      <span class="fa fa-hand-scissors-o"></span>
+                  </button>
+                  <pre>DMG: {{icon.scissor}}</pre>               
+              </div>                
+            </div>
+
+
+            
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="icon-wrap enemy">
+            <div class="top-section">
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span><b>Lola</b> <pre>{{enemy.name}}</pre></span>
+            </div>
+            <div class="icon-warrior">
+                <div class="icon-wrap">
+                  <span class="fa {{enemy.name}}"></span>
+      
+
+                  <div class="enemy-attack" *ngIf="enemyCurrentAtk" [ngStyle]="{'background-color': enemyAttackBg[enemyBgCounter]}">
+                      <span class="fa fa-hand-{{enemyCurrentAtk}}-o"></span>
+                      <!-- <pre style='position: absolute;'>{{enemyCurrentAtk}}</pre> -->
+                  </div>
+      
+                  
+                </div>
+                
+              </div>           
+        </div>
+
+
+    </div>
+  </div>
+</div>

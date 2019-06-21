@@ -1,0 +1,139 @@
+@mixin transition ($duration)
+    -webkit-transition: $duration
+    -moz-transition: $duration
+    -ms-transition: $duration
+    -o-transition: $duration
+    transition: $duration
+    
+.icon-wrap
+    .top-section
+        .progress
+            height: 25px
+            .progress-bar 
+        span
+            margin-top: 9px
+            display: flex
+            align-items: flex-start
+            flex-flow: column
+            b
+                font-size: 18px
+            pre
+                margin-bottom: 0
+    .icon-warrior
+        position: relative
+        display: flex
+        justify-content: center
+        align-items: center
+        margin-top: 30px
+        .icon-wrap
+            margin-top: 30px
+            display: flex
+            align-items: center
+            justify-content: center
+            flex-flow: column 
+            margin-bottom: 50px       
+            .fa
+                font-size: 180px
+            .controls
+                display: flex
+                align-content: center
+                justify-content: space-between
+                margin-top: 30px
+                .btn-wrap
+                    margin-right: 20px
+                    position: relative
+                    box-shadow: 3px 3px 0px 0px #000
+                    border-radius: 5px
+                    position: relative
+                    height: 59px
+                    width: 59px
+                    &:last-of-type
+                        margin-right:0                
+                    button
+                        position: absolute              
+                        height: 60px
+                        width: 60px
+                        background-color: #343a40
+                        color: #fff
+                        border: 0
+                        border-radius: 5px
+                        top: 0
+                        left: 0
+                        cursor: pointer                   
+                        &:hover
+                            top: 2px
+                            left: 2px
+                            box-shadow: 0px 0px 3px 0px #000              
+                        &:focus
+                            outline: none
+                        span
+                            font-size: 40px
+                    pre
+                        position: absolute
+                        bottom: -26px
+                        left: -1px
+                        text-align: center
+                        margin-bottom: 0
+                        background: #000
+                        width: 62px
+                        color: #fff
+                        border-radius: 3px
+                        box-shadow: 1px 1px 1px #000
+    &.enemy
+        height: 100%
+        .top-section           
+            .progress
+                justify-content: flex-end
+                .progress-bar
+            span
+                align-items: flex-end
+        .icon-warrior
+            height: calc(100% - 112px)
+            .icon-wrap
+                .fa
+                    
+                .enemy-attack
+                    position: absolute
+                    z-index: 1
+                    height: 100px
+                    width: 100px
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    bottom: 33px
+                    left: 10px
+                    border-radius: 50%
+                    color: #fff
+                    background: #ff4747
+                    @include transition(.3s)
+                    animation: wiggle 1s infinite
+                    span
+                        animation: none
+                        font-size: 60px            
+
+.alive
+    animation: alive 2s infinite
+
+@keyframes wiggle
+    0%
+        transform: rotate(0deg)
+    80%
+        transform: rotate(0deg)
+    85%
+        transform: rotate(5deg)
+    95%
+        transform: rotate(-5deg)
+    100%
+        transform: rotate(0deg)
+
+@keyframes alive
+    0%
+        transform: translateY(0)
+    20%
+        transform: translateY(-5px)
+    60%
+        transform: translateY(0)
+    80%
+        transform: translateY(-5px)        
+    100%
+        transform: translateY(0)

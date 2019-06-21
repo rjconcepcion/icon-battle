@@ -41,6 +41,13 @@ export class IconService {
     return this.http.get<Icon[]>(url,httpOptions)
   }
 
+  searchIconById (fake_id: any): Observable<Icon[]>{
+    
+    const url = `${environment.endpoint}icon-list?q={"fake_id":${fake_id}}`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  }
+
+
   addIcon (icon: Icon): Observable<Icon> {
     const url = `${environment.endpoint}icon-list`;
     return this.http.post<Icon>(url, icon, httpOptions);
