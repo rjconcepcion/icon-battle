@@ -1,21 +1,24 @@
+<app-loader [showloader]="showloader" [texty]="texty"></app-loader>
 <app-header [creator]="creator" ></app-header>
-
-<div class="container" >
+<div class="container">
   <div class="row">
     <div class="col-md-6">
-      <div class="icon-wrap">
+      <div [ngClass]="['icon-wrap', (getHit == 2) ? 'hitted' : '']" *ngIf='icon'>
         <div class="top-section">          
           <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{'width':(creatorHpPercent)+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <span><b>{{creator}}</b> <pre>{{icon.name}}</pre></span>
         </div>
 
         <div class="icon-warrior">
           <div class="icon-wrap">
-            <span class="fa {{icon.name}}"></span>
+            <span [ngClass]="[
+              'fa',
+              icon.name,
+              creatorHpPercent ? 'alive' : 'killed']"></span>
 
-            <div class="controls">
+            <div id="controls" [ngClass]="[!creatorHpPercent ? 'deadme' : '']">
               <div class="btn-wrap">
                   <button (click)="creatorAtk(0)">
                       
@@ -46,19 +49,35 @@
 
     </div>
     <div class="col-md-6">
-        <div class="icon-wrap enemy">
+        <div [ngClass]="['icon-wrap', 'enemy', (getHit == 1) ? 'hitted' : '']" [ngStyle]="{'overflow':'hidden'}"  *ngIf='enemy'>
             <div class="top-section">
                 <div class="progress">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{'width':(enemyHpPercent)+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <span><b>Lola</b> <pre>{{enemy.name}}</pre></span>
             </div>
             <div class="icon-warrior">
                 <div class="icon-wrap">
-                  <span class="fa {{enemy.name}}"></span>
-      
 
-                  <div class="enemy-attack" *ngIf="enemyCurrentAtk" [ngStyle]="{'background-color': enemyAttackBg[enemyBgCounter]}">
+                  <span [ngClass]="[
+                    'fa',
+                    enemy.name,
+                    enemyHpPercent ? 'alive' : 'killed']"></span>
+
+                  <div 
+                  *ngIf="enemyCurrentAtk"
+                  [ngClass]="
+                    {
+                      'enemy-attack' : true,
+                      'wiggle': enemyCurrentAtk && enemyHpPercent,
+                      'dead': !enemyHpPercent 
+                    }" 
+                  [ngStyle]="
+                    {
+                      'background-color': enemyAttackBg[enemyBgCounter],
+                      'left': enemyAttackPosition[enemyBgCounter][0],
+                      'bottom': enemyAttackPosition[enemyBgCounter][1]
+                    }">
                       <span class="fa fa-hand-{{enemyCurrentAtk}}-o"></span>
                       <!-- <pre style='position: absolute;'>{{enemyCurrentAtk}}</pre> -->
                   </div>
