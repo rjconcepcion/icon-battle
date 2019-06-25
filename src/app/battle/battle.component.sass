@@ -89,6 +89,13 @@
                         color: #fff
                         border-radius: 3px
                         box-shadow: 1px 1px 1px #000
+                &.disabled
+                    .btn-wrap
+                        button
+                            top: 2px
+                            left: 2px
+                            box-shadow: 0px 0px 3px 0px #000
+                            cursor: not-allowed                
     &.enemy
         height: 100%
         overflow:hidden
@@ -119,10 +126,64 @@
                     @include transition(.3s)
                     span
                         animation: none
-                        font-size: 60px            
+                        font-size: 60px   
+
+.result-log
+    position: absolute
+    left: 0
+    right: 0
+    top: 45px
+    text-align: center    
+    .inner-wrap
+        display: inline-flex
+        justify-content: center
+        background: #343a40
+        color: #fff
+        padding: 4px 3px
+        border-radius: 4px
+        box-shadow: 0px 2px 0px 1px #000 
+        i
+            font-size:12px
+        pre
+            margin-bottom: 0
+            font-size: 18px
+            margin-left: 5px
+            margin-right: 5px
+            letter-spacing: 2px
+            color: #fff
+
+.show-log
+    cursor: pointer
+    position: fixed
+    bottom: 5px
+    right: 15px
+    background: #343a40
+    color: #fff
+    font-weight: 700
+    padding: 1px 6px
+    border-radius: 5px
+    box-shadow: 2px 4px 0px 2px #000
+    &.click
+        bottom: 1px
+        right: 10px
+        box-shadow: 1px 1px 1px 0px #000
+
+.creator-counter
+    position: fixed
+    bottom: 0
+    left: 18px    
+    pre
+        margin-bottom: 0
+
+.vibrate-1
+    animation: vibrate-1 .8s
+    -webkit-animation-fill-mode: forwards
 .score
     animation: score 5s
     -webkit-animation-fill-mode: forwards
+.draw
+    animation: bounce-top 1s
+    -webkit-animation-fill-mode: forwards    
 .hitted
     animation: hitted 1s
     -webkit-animation-fill-mode: forwards
@@ -423,3 +484,81 @@
             transform: translateY(0)
     opacity: 1
   
+
+@keyframes bounce-top
+  0%
+    -webkit-transform: translateY(-45px)
+            transform: translateY(-45px)
+    -webkit-animation-timing-function: ease-in
+            animation-timing-function: ease-in
+    opacity: 1
+  
+  24%
+    opacity: 1
+  
+  40%
+    -webkit-transform: translateY(-24px)
+            transform: translateY(-24px)
+    -webkit-animation-timing-function: ease-in
+            animation-timing-function: ease-in
+  
+  65%
+    -webkit-transform: translateY(-12px)
+            transform: translateY(-12px)
+    -webkit-animation-timing-function: ease-in
+            animation-timing-function: ease-in
+  
+  82%
+    -webkit-transform: translateY(-6px)
+            transform: translateY(-6px)
+    -webkit-animation-timing-function: ease-in
+            animation-timing-function: ease-in
+  
+  93%
+    -webkit-transform: translateY(-4px)
+            transform: translateY(-4px)
+    -webkit-animation-timing-function: ease-in
+            animation-timing-function: ease-in
+  
+  25%,
+  55%,
+  75%,
+  87%
+    -webkit-transform: translateY(0px)
+            transform: translateY(0px)
+    -webkit-animation-timing-function: ease-out
+            animation-timing-function: ease-out
+  
+  100%
+    -webkit-transform: translateY(0px)
+            transform: translateY(0px)
+    -webkit-animation-timing-function: ease-out
+            animation-timing-function: ease-out
+    opacity: 1
+  
+@keyframes vibrate-1
+  0%
+    -webkit-transform: translate(0)
+            transform: translate(0)
+  
+  20%
+    -webkit-transform: translate(-2px, 2px)
+            transform: translate(-2px, 2px)
+  
+  40%
+    -webkit-transform: translate(-2px, -2px)
+            transform: translate(-2px, -2px)
+  
+  60%
+    -webkit-transform: translate(2px, 2px)
+            transform: translate(2px, 2px)
+  
+  80%
+    -webkit-transform: translate(2px, -2px)
+            transform: translate(2px, -2px)
+  
+  100%
+    -webkit-transform: translate(0)
+            transform: translate(0)
+  
+

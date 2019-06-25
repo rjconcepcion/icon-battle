@@ -15,7 +15,8 @@ import { BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class BattleComponent implements OnInit {
 
-
+  totalWins : number = 0;
+  totalHits : number = 0; 
   showloader :boolean = true;
   texty : string;
   zIndex : string = "1040";
@@ -23,9 +24,10 @@ export class BattleComponent implements OnInit {
   creator : string;
   creatorIcon : string;
   creatorHp : number;
-  creatorHpPercent : number = 100000;
+  creatorHpPercent : number = 100;
   icon : Icon[];
   enemy;
+
 
 
   enemyList : Icon[];
@@ -43,6 +45,18 @@ export class BattleComponent implements OnInit {
   attackList = ['rock','paper','scissors'];
 
   getHit : number = 0;
+  enableLog : boolean = true;
+  battleLog()  {
+    let result = false;
+    if(this.getHit == 1){
+      result = "WIN";
+    }else if(this.getHit == 2){
+      result = "LOOSE";
+    }else if(this.getHit == 3){
+      result = "DRAW";
+    }
+    return result;
+  }
 
   modalRef: BsModalRef;
   template : any;
@@ -95,24 +109,18 @@ export class BattleComponent implements OnInit {
     this.texty = "Creating bonding between you and the selected icon.";
     this.iconService.searchIconById(this.creatorIcon).subscribe(
       (response : any) => {
-        this.showloader = false;
         this.icon = response[0];
         this.creatorHp = response[0].hp;
         this.searchEnemy();
       },
       (error: any) => {
         console.log('error');
-        console.log(error);
-      },
-      () => {
-        console.log('complete');
       }
     );
   }
 
   searchEnemy() : void {
-    // this.showloader = true;
-    // this.texty = "Searching your opponent icon";    
+    this.texty = "Searching your opponent icon";    
     this.battleService.enemiesList()
     .subscribe(
       (response : any) => {
@@ -120,18 +128,15 @@ export class BattleComponent implements OnInit {
         let enemy = response[Math.floor(Math.random() * response.length)];
         this.enemy = enemy;
         this.enemyHp = enemy.hp;
-        // this.showloader = false;
+        this.showloader = false;
       }
     );
   }
 
   enemyAttack()  {
     this.enemyCurrentAtk = this.attackList[this.iconService.rand(0,2)];
-    
-    setTimeout(function(){
-      this.enemyCurrentAtk = null;
-    },2000);
-     return this.enemyCurrentAtk;
+    //this.enemyCurrentAtk = 'paper'; //Uncomment for testing
+    return this.enemyCurrentAtk;
   }
 
   _dmgPercentCalc (value: number, total : number) : number {
@@ -140,12 +145,16 @@ export class BattleComponent implements OnInit {
 
   creatorAtk(atkType : number)  {
     var battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
+
+    console.log(battle);
+
     this.enemyBgCounter += 1;
     if(this.enemyBgCounter == 3){
       this.enemyBgCounter = 0;
     }
     this.getHit = battle.win;
     if(battle.win == 1){
+      this.totalHits += 1;
       let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
       if(dmg > this.enemyHpPercent){
         this.enemyHpPercent = 0;
@@ -159,21 +168,36 @@ export class BattleComponent implements OnInit {
       }else{
         this.creatorHpPercent -= dmg;
       }
-    }else{
+    }else if(battle.win == 0 && battle.dmg == 0){
+      this.getHit = 3;
+      setTimeout(()=>{
+        this.getHit = 0;    
+      }, 1000);       
     }
   
     if(this.enemyHpPercent == 0){
-      let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
-      this.enemy = enmy;
-      this.enemyHp = enmy.hp;
-      this.enemyHpPercent = 100;      
-
-
+      this.totalWins += 1;
+      setTimeout(()=>{
+        let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
+        this.enemy = enmy;
+        this.enemyHp = enmy.hp;
+        this.enemyHpPercent = 100;
+        this.enemyCurrentAtk = false;
+        this.getHit = 0; 
+      }, 3000);
+    }else{
+      setTimeout(()=>{
+        this.getHit = 0;      
+      }, 1000); 
     }
   
   }
 
-
+  showLog() {
+    this.enableLog = this.enableLog ? false : true;
+    console.log(this.enableLog);
+    console.log(this.totalWins);
+  }
 
   battleResult(p1Atk : string, p2Atk : string) {
     let result = {};
@@ -223,7 +247,6 @@ export class BattleComponent implements OnInit {
         dmg : this.enemy['scissor'],
       }
     }
-    
     return result;
   }
 
