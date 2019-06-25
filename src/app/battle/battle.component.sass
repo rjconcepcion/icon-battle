@@ -4,7 +4,13 @@
     -ms-transition: $duration
     -o-transition: $duration
     transition: $duration
-    
+
+
+
+
+#icon-loader
+  z-index: 1 !important
+  
 .icon-wrap
     @include transition(.5s)    
     .top-section
@@ -32,7 +38,7 @@
             align-items: center
             justify-content: center
             flex-flow: column 
-            margin-bottom: 50px       
+            margin-bottom: 50px
             .fa
                 font-size: 180px
                 @include transition(.5s)
@@ -114,6 +120,9 @@
                     span
                         animation: none
                         font-size: 60px            
+.score
+    animation: score 5s
+    -webkit-animation-fill-mode: forwards
 .hitted
     animation: hitted 1s
     -webkit-animation-fill-mode: forwards
@@ -402,3 +411,15 @@
     -webkit-transform: rotate(-540deg) scale(0)
             transform: rotate(-540deg) scale(0)
     opacity: 0
+
+
+@keyframes score
+  0%
+    -webkit-transform: translateY(-1000px)
+            transform: translateY(-1000px)
+    opacity: 0
+  100%
+    -webkit-transform: translateY(0)
+            transform: translateY(0)
+    opacity: 1
+  

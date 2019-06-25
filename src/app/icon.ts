@@ -5,4 +5,5 @@ export class Icon {
     rock: number;
     paper: number;
     scissor: number;
+    fake_id: number;
 }

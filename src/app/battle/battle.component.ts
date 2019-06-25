@@ -1,10 +1,12 @@
-import { Component, OnInit, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, ViewChild  } from '@angular/core';
+import { Router } from "@angular/router";
 import { CookieService } from 'ngx-cookie-service';
 import { Icon } from  '../Icon';
 import { IconService } from '../icon.service';
 import { BattleService } from '../battle.service';
 import { ActivatedRoute } from '@angular/router';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
+
 
 @Component({
   selector: 'app-battle',
@@ -16,14 +18,17 @@ export class BattleComponent implements OnInit {
 
   showloader :boolean = true;
   texty : string;
+  zIndex : string = "1040";
 
   creator : string;
   creatorIcon : string;
   creatorHp : number;
-  creatorHpPercent : number = 100;
+  creatorHpPercent : number = 100000;
   icon : Icon[];
-  enemy : Icon[];
+  enemy;
 
+
+  enemyList : Icon[];
   enemyHp : number;
   enemyHpPercent : number = 100;
   enemyCurrentAtk : string;
@@ -39,28 +44,52 @@ export class BattleComponent implements OnInit {
 
   getHit : number = 0;
 
+  modalRef: BsModalRef;
+  template : any;
+
+  @ViewChild('autoShownModal', { static: false }) autoShownModal: ModalDirective;
+  isModalShown : boolean;
+ 
   constructor(
     private cookieService: CookieService,
     private iconService: IconService,
     private route: ActivatedRoute,
     private battleService: BattleService,
+    private router: Router
   ) { }
 
   ngOnInit() {
 
+    this.route.paramMap.subscribe(params => {
+      this.creatorIcon = params.get('fakeIconId');
+    });
+
     if(this.cookieService.check('creator')){
       this.creator = this.cookieService.get('creator');
-      this.route.paramMap.subscribe(params => {
-        this.creatorIcon = params.get('fakeIconId');
-      });
       this.setMyIcom();
-    }else{
-        this.texty = "Dont be shy set your name";
     }
 
   }
+  ngAfterViewInit(){
+    if(!this.cookieService.check('creator')){
+      this.showModal();
+    }
+  }
 
 
+
+  showModal() : void {
+    this.autoShownModal.show();
+    console.log(this.autoShownModal);
+    this.autoShownModal.onHidden.subscribe((reason: string) => {
+      this.autoShownModal.show();
+    })    
+  }
+
+  hideModal() : void {
+    this.autoShownModal.hide();  
+  }
+  
   setMyIcom() : void {
     this.showloader = true;
     this.texty = "Creating bonding between you and the selected icon.";
@@ -82,15 +111,16 @@ export class BattleComponent implements OnInit {
   }
 
   searchEnemy() : void {
-    this.showloader = true;
-    this.texty = "Searching your opponent icon";    
+    // this.showloader = true;
+    // this.texty = "Searching your opponent icon";    
     this.battleService.enemiesList()
     .subscribe(
       (response : any) => {
+        this.enemyList = response;
         let enemy = response[Math.floor(Math.random() * response.length)];
         this.enemy = enemy;
         this.enemyHp = enemy.hp;
-        this.showloader = false;
+        // this.showloader = false;
       }
     );
   }
@@ -109,39 +139,38 @@ export class BattleComponent implements OnInit {
   }
 
   creatorAtk(atkType : number)  {
-
     var battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
-    
-    
     this.enemyBgCounter += 1;
     if(this.enemyBgCounter == 3){
       this.enemyBgCounter = 0;
     }
-    
     this.getHit = battle.win;
-
     if(battle.win == 1){
       let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
-
       if(dmg > this.enemyHpPercent){
         this.enemyHpPercent = 0;
       }else{
         this.enemyHpPercent -= dmg;
       }
-
     }else if(battle.win == 2){
-
       let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
-
       if(dmg > this.creatorHpPercent){
         this.creatorHpPercent = 0;
       }else{
         this.creatorHpPercent -= dmg;
       }
-
     }else{
+    }
+  
+    if(this.enemyHpPercent == 0){
+      let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
+      this.enemy = enmy;
+      this.enemyHp = enmy.hp;
+      this.enemyHpPercent = 100;      
+
 
     }
+  
   }
 
 
@@ -198,4 +227,11 @@ export class BattleComponent implements OnInit {
     return result;
   }
 
+  setCreator(name: string) : void {
+    this.cookieService.set( 'creator', name );
+    this.creator = this.cookieService.get('creator');
+    window.location.reload();
+  }
+
+  
 }

@@ -1,4 +1,4 @@
-<app-loader [showloader]="showloader" [texty]="texty"></app-loader>
+<app-loader [showloader]="showloader" [texty]="texty" [zIndex]="zIndex"></app-loader>
 <app-header [creator]="creator" ></app-header>
 <div class="container">
   <div class="row">
@@ -13,6 +13,13 @@
 
         <div class="icon-warrior">
           <div class="icon-wrap">
+            <div *ngIf='!creatorHpPercent' [ngClass]="['battle-result',!creatorHpPercent ? 'score' : '']">
+              <pre>DEFEATED</pre>
+              <pre>Total Wins : 1</pre>
+              <button class="btn btn-success">OK</button>
+            </div>
+
+
             <span [ngClass]="[
               'fa',
               icon.name,
@@ -89,6 +96,28 @@
         </div>
 
 
+    </div>
+  </div>
+</div>
+
+<div bsModal #autoShownModal="bs-modal" id="brave-name" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-auto-name" class="modal-title pull-left">Caution!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="disabledTextInput">Set your name : </label>
+        <input type="text" class="form-control" #creatorName="ngModel" [(ngModel)]="this.value" minlength="3" pattern="[a-zA-Z]*" required>      
+        <small id="emailHelp" class="form-text text-muted">Name is required before you fight! (letters only min of 3 characters)</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">Close</button>
+        <button type="button" class="btn btn-success" (click)="setCreator(creatorName.value)" [disabled]="creatorName.invalid">Submit</button>
+      </div>       
     </div>
   </div>
 </div>

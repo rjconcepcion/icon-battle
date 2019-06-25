@@ -26,7 +26,7 @@ import {
 export class LoaderComponent implements OnInit {
   
   private _showloader : boolean;
-
+  @Input() zIndex : string;
   @Input() texty : string;
   @Input()
   set showloader(showloader : boolean){
