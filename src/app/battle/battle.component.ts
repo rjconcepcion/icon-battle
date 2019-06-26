@@ -28,8 +28,6 @@ export class BattleComponent implements OnInit {
   icon : Icon[];
   enemy : any;
 
-
-
   enemyList : Icon[];
   enemyHp : number;
   enemyHpPercent : number = 100;
@@ -46,17 +44,6 @@ export class BattleComponent implements OnInit {
 
   getHit : number = 0;
   enableLog : boolean = true;
-  battleLog() : any {
-    let result : any = false;
-    if(this.getHit == 1){
-      result = "WIN";
-    }else if(this.getHit == 2){
-      result = "LOOSE";
-    }else if(this.getHit == 3){
-      result = "DRAW";
-    }
-    return result;
-  }
 
   modalRef: BsModalRef;
   modalHide : any;
@@ -73,19 +60,16 @@ export class BattleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.route.paramMap.subscribe(params => {
       this.creatorIcon = params.get('fakeIconId');
     });
-
     if(this.cookieService.check('creator')){
       this.creator = this.cookieService.get('creator');
       this.setMyIcom();
     }
-
   }
+
   ngAfterViewInit(){
-    
     if(!this.cookieService.check('creator')){
       
       this.autoShownModal.show()
@@ -98,10 +82,12 @@ export class BattleComponent implements OnInit {
     this.modalHide.unsubscribe();
   }
 
-  hideModal() : void {
-    this.autoShownModal.hide();  
+  setCreator(name: string) : void {
+    this.cookieService.set( 'creator', name );
+    this.creator = this.cookieService.get('creator');
+    window.location.reload();
   }
-  
+
   setMyIcom() : void {
     this.showloader = true;
     this.texty = "Creating bonding between you and the selected icon.";
@@ -137,122 +123,114 @@ export class BattleComponent implements OnInit {
     return this.enemyCurrentAtk;
   }
 
+  creatorAtk(atkType : number)  {
+    let battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
+    this.getHit = battle.win;
+    if(battle.win == 1){
+      this.totalHits += 1;
+      let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
+      if(dmg > this.enemyHpPercent){
+        this.enemyHpPercent = 0;
+      }else{
+        this.enemyHpPercent -= dmg;
+      }
+    }else if(battle.win == 2){
+      let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
+      if(dmg > this.creatorHpPercent){
+        this.creatorHpPercent = 0;
+      }else{
+        this.creatorHpPercent -= dmg;
+      }
+    }else if(battle.win == 0 && battle.dmg == 0){
+      this.getHit = 3;
+      setTimeout(()=>{
+        this.getHit = 0;    
+      }, 1000);       
+    }
+
+    this._setEnemyAttackBg();
+    this._setNewOpponemt();
+    this._resetHitCtr();
+  }
+
   _dmgPercentCalc (value: number, total : number) : number {
     return (value/total) * 100;
   }
 
-  creatorAtk(atkType : number)  {
-
-    // var battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
-
-    // console.log(battle);
-
-    // this.enemyBgCounter += 1;
-    // if(this.enemyBgCounter == 3){
-    //   this.enemyBgCounter = 0;
-    // }
-    // this.getHit = battle.win;
-    // if(battle.win == 1){
-    //   this.totalHits += 1;
-    //   let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
-    //   if(dmg > this.enemyHpPercent){
-    //     this.enemyHpPercent = 0;
-    //   }else{
-    //     this.enemyHpPercent -= dmg;
-    //   }
-    // }else if(battle.win == 2){
-    //   let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
-    //   if(dmg > this.creatorHpPercent){
-    //     this.creatorHpPercent = 0;
-    //   }else{
-    //     this.creatorHpPercent -= dmg;
-    //   }
-    // }else if(battle.win == 0 && battle.dmg == 0){
-    //   this.getHit = 3;
-    //   setTimeout(()=>{
-    //     this.getHit = 0;    
-    //   }, 1000);       
-    // }
-  
-    // if(this.enemyHpPercent == 0){
-    //   this.totalWins += 1;
-    //   setTimeout(()=>{
-    //     let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
-    //     this.enemy = enmy;
-    //     this.enemyHp = enmy.hp;
-    //     this.enemyHpPercent = 100;
-    //     this.enemyCurrentAtk = undefined;
-    //     this.getHit = 0; 
-    //   }, 3000);
-    // }else{
-    //   setTimeout(()=>{
-    //     this.getHit = 0;      
-    //   }, 1000); 
-    // }
-  
+  _setNewOpponemt() : void {
+    if(this.enemyHpPercent == 0){
+      this.totalWins += 1;
+      setTimeout(()=>{
+        let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
+        this.enemy = enmy;
+        this.enemyHp = enmy.hp;
+        this.enemyHpPercent = 100;
+        this.enemyCurrentAtk = undefined;
+        this.getHit = 0; 
+      }, 3000);
+    }
   }
 
-  showLog() {
-    this.enableLog = this.enableLog ? false : true;
-    console.log(this.enableLog);
-    console.log(this.totalWins);
+  _resetHitCtr() : void {
+    if(this.enemyHpPercent > 0){
+      setTimeout(()=>{
+        this.getHit = 0;      
+      }, 1000); 
+    }
   }
 
-  battleResult(p1Atk : string, p2Atk : string) {
-    let result = {};
-    if(p1Atk == 'rock' && p2Atk == 'rock'){
-      result = {
-        win : 0,
-        dmg : 0,
-      }
-    } else if(p1Atk == 'paper' && p2Atk == 'paper'){
-      result = {
-        win : 0,
-        dmg : 0,
-      }
-    } else if(p1Atk == 'scissors' && p2Atk == 'scissors'){
-      result = {
-        win : 0,
-        dmg : 0,
-      }
-    } else if(p1Atk == 'rock' && p2Atk == 'scissors'){
-      result = {
-        win : 1,
-        dmg : this.icon['rock'],
-      }
-    } else if(p1Atk == 'paper' && p2Atk == 'rock'){
-      result = {
-        win : 1,
-        dmg : this.icon['paper'],
-      }
-    } else if(p1Atk == 'scissors' && p2Atk == 'paper'){
-      result = {
-        win : 1,
-        dmg : this.icon['scissor'],
-      }
-    } else if(p1Atk == 'scissors' && p2Atk == 'rock'){
-      result = {
-        win : 2,
-        dmg : this.enemy['rock'],
-      }
-    } else if(p1Atk == 'rock' && p2Atk == 'paper'){
-      result = {
-        win : 2,
-        dmg : this.enemy['paper'],
-      }
-    } else if(p1Atk == 'paper' && p2Atk == 'scissors'){
-      result = {
-        win : 2,
-        dmg : this.enemy['scissor'],
-      }
+  _setEnemyAttackBg() : void {
+    this.enemyBgCounter += 1;
+    if(this.enemyBgCounter == 3){
+      this.enemyBgCounter = 0;
+    }    
+  }
+
+  battleLog() : any {
+    let result : any = false;
+    if(this.getHit == 1){
+      result = "WIN";
+    }else if(this.getHit == 2){
+      result = "LOOSE";
+    }else if(this.getHit == 3){
+      result = "DRAW";
     }
     return result;
   }
 
-  setCreator(name: string) : void {
-    this.cookieService.set( 'creator', name );
-    this.creator = this.cookieService.get('creator');
-    window.location.reload();
+  showLog() {
+    this.enableLog = this.enableLog ? false : true;
+  }
+
+  battleResult(p1Atk : string, p2Atk : string) {
+    let result = { win : 0, dmg : 0 };
+    if(p1Atk == 'rock' && p2Atk == 'rock'){
+      result = { win : 0, dmg : 0 }
+    } else if(p1Atk == 'paper' && p2Atk == 'paper'){
+      result = { win : 0, dmg : 0 }
+    } else if(p1Atk == 'scissors' && p2Atk == 'scissors'){
+      result = { win : 0, dmg : 0 }
+    } else if(p1Atk == 'rock' && p2Atk == 'scissors'){
+      result = { win : 1, dmg : this.icon['rock'] }
+    } else if(p1Atk == 'paper' && p2Atk == 'rock'){
+      result = { win : 1, dmg : this.icon['paper'] }
+    } else if(p1Atk == 'scissors' && p2Atk == 'paper'){
+      result = { win : 1, dmg : this.icon['scissor'] }
+    } else if(p1Atk == 'scissors' && p2Atk == 'rock'){
+      result = { win : 2, dmg : this.enemy['rock'] }
+    } else if(p1Atk == 'rock' && p2Atk == 'paper'){
+      result = { win : 2, dmg : this.enemy['paper'] }
+    } else if(p1Atk == 'paper' && p2Atk == 'scissors'){
+      result = { win : 2, dmg : this.enemy['scissor'] }
+    }
+    return result;
+  }
+
+  /**
+   * NGX BOOTSTRAP MODAL FN
+   */
+  hideModal() : void {
+    this.autoShownModal.hide();  
   }
 
 }
