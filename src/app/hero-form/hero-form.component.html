@@ -1,0 +1,29 @@
+<div class="container">
+    <h1>Hero Form</h1>
+    <form #heroForm="ngForm" (ngSubmit)="onSubmit()">
+        {{diagnostic}}
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name"
+       required
+       [(ngModel)]="name" name="name" #nameRef="ngModel">
+      </div>
+      TODO: remove this: {{name}}
+      <br>TODO: remove this: {{nameRef.invalid}}
+      <br>TODO: remove this: {{log(nameRef)}} 
+
+
+      <div class="form-group">
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" class="form-control" id="alterEgo" name="alter" [disabled]='nameRef.invalid'>
+      </div>
+      <div class="form-group">
+          <label for="power">Hero Power</label>
+          <select class="form-control" id="power" name="powers" required>
+            <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+          </select>
+        </div>
+      <button type="submit" class="btn btn-success">Submit</button>
+ 
+    </form>
+</div>

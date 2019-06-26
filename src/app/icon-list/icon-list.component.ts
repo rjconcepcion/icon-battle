@@ -12,6 +12,10 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class IconListComponent implements OnInit {
 
+  hero : any;
+
+  
+
   //Loading
   showloader :boolean = false;
   texty : string;
@@ -32,6 +36,8 @@ export class IconListComponent implements OnInit {
 
   candidate_creator : string = null;
   creator : string = this.cookieService.check('creator') ? this.cookieService.get('creator') : null;
+  readOnlyCreator : string = this.cookieService.check('creator') ? this.cookieService.get('creator') : null;
+
 
   constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService) { }
   
@@ -95,7 +101,7 @@ export class IconListComponent implements OnInit {
     );
   }
 
-  add(name: string): void {    
+  add(name: string,creator: string = null): void {
     this.showloader = true;
     if(this.currentPage > 1){
       this.currentPage = 1;
@@ -147,8 +153,9 @@ export class IconListComponent implements OnInit {
   }
   _setCreator () : void {
     if(this.creator === null){
-      this.cookieService.set( 'creator', this.candidate_creator );
+      this.cookieService.set( 'creator', this.readOnlyCreator );
       this.creator = this.cookieService.get('creator');
+      this.readOnlyCreator = this.creator; 
     }
   }
 
