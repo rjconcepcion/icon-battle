@@ -17,7 +17,7 @@ export class BattleComponent implements OnInit {
 
   totalWins : number = 0;
   totalHits : number = 0; 
-  showloader :boolean = false;
+  showloader :boolean = true;
   texty : string;
   zIndex : string = "1040";
 
@@ -87,7 +87,7 @@ export class BattleComponent implements OnInit {
   ngAfterViewInit(){
     
     if(!this.cookieService.check('creator')){
-      this.showloader = true;
+      
       this.autoShownModal.show()
       this.modalHide = this.autoShownModal.onHidden.subscribe((reason: string) => {
         this.autoShownModal.show();
