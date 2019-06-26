@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, timer, Subscription } from 'rxjs';
 
 
 
@@ -20,14 +21,37 @@ export class HeroFormComponent implements OnInit {
 
   powers = ['creepy walk','nightmare','eat veggies']
 
+  // everySeconds : Observable<number> = timer(0,1000);
+
+  private subscription: Subscription = new Subscription();
+  
+  timer$: Observable<number> = timer(0,1000)
+
   ngOnInit() {
+    
+  }
+
+  ngOnDestroy() {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+
+  }
+
+  check() : void {
+    console.table(this.subscription);
+  }
+
+  subs() : void {
+    this.subscription = this.timer$.subscribe(testing => console.log(testing));
   }
 
   log(val) {  }
 
   onSubmit() {
-    console.log(this);
+    
   }
+
 
   // get diagnostic() { return JSON.stringify(this.model); }
 }

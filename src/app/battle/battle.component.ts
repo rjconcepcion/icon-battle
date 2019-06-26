@@ -79,7 +79,9 @@ export class BattleComponent implements OnInit {
     }
   }
   ngOnDestroy() {
-    this.modalHide.unsubscribe();
+    if(this.modalHide){
+      this.modalHide.unsubscribe();
+    }    
   }
 
   setCreator(name: string) : void {

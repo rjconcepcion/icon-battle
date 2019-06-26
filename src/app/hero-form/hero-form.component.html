@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Hero Form</h1>
+    <a routerLink="">TEST LINK</a>
     <form #heroForm="ngForm" (ngSubmit)="onSubmit()">
         {{diagnostic}}
       <div class="form-group">
@@ -24,6 +24,9 @@
           </select>
         </div>
       <button type="submit" class="btn btn-success">Submit</button>
- 
+      
     </form>
 </div>
+
+<button (click)="subs()">SUBCRIBE MODE</button>
+<button (click)="check()">check subs value</button>
