@@ -36,9 +36,11 @@ export class IconListComponent implements OnInit {
   constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService) { }
   
   ngOnInit() {
+    
+    
     this.getIcons();  
   }
-
+  
   // PAGINATION EVENTS
   pageChanged(event: any): void {
     this.showloader = true;

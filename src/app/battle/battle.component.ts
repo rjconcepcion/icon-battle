@@ -17,7 +17,7 @@ export class BattleComponent implements OnInit {
 
   totalWins : number = 0;
   totalHits : number = 0; 
-  showloader :boolean = true;
+  showloader :boolean = false;
   texty : string;
   zIndex : string = "1040";
 
@@ -26,7 +26,7 @@ export class BattleComponent implements OnInit {
   creatorHp : number;
   creatorHpPercent : number = 100;
   icon : Icon[];
-  enemy;
+  enemy : any;
 
 
 
@@ -46,8 +46,8 @@ export class BattleComponent implements OnInit {
 
   getHit : number = 0;
   enableLog : boolean = true;
-  battleLog()  {
-    let result = false;
+  battleLog() : any {
+    let result : any = false;
     if(this.getHit == 1){
       result = "WIN";
     }else if(this.getHit == 2){
@@ -59,10 +59,10 @@ export class BattleComponent implements OnInit {
   }
 
   modalRef: BsModalRef;
+  modalHide : any;
   template : any;
 
   @ViewChild('autoShownModal', { static: false }) autoShownModal: ModalDirective;
-  isModalShown : boolean;
  
   constructor(
     private cookieService: CookieService,
@@ -85,19 +85,17 @@ export class BattleComponent implements OnInit {
 
   }
   ngAfterViewInit(){
+    
     if(!this.cookieService.check('creator')){
-      this.showModal();
+      this.showloader = true;
+      this.autoShownModal.show()
+      this.modalHide = this.autoShownModal.onHidden.subscribe((reason: string) => {
+        this.autoShownModal.show();
+      })
     }
   }
-
-
-
-  showModal() : void {
-    this.autoShownModal.show();
-    console.log(this.autoShownModal);
-    this.autoShownModal.onHidden.subscribe((reason: string) => {
-      this.autoShownModal.show();
-    })    
+  ngOnDestroy() {
+    this.modalHide.unsubscribe();
   }
 
   hideModal() : void {
@@ -140,56 +138,57 @@ export class BattleComponent implements OnInit {
   }
 
   _dmgPercentCalc (value: number, total : number) : number {
-   return (value/total) * 100;
+    return (value/total) * 100;
   }
 
   creatorAtk(atkType : number)  {
-    var battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
 
-    console.log(battle);
+    // var battle = this.battleResult(this.attackList[atkType],this.enemyAttack());
 
-    this.enemyBgCounter += 1;
-    if(this.enemyBgCounter == 3){
-      this.enemyBgCounter = 0;
-    }
-    this.getHit = battle.win;
-    if(battle.win == 1){
-      this.totalHits += 1;
-      let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
-      if(dmg > this.enemyHpPercent){
-        this.enemyHpPercent = 0;
-      }else{
-        this.enemyHpPercent -= dmg;
-      }
-    }else if(battle.win == 2){
-      let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
-      if(dmg > this.creatorHpPercent){
-        this.creatorHpPercent = 0;
-      }else{
-        this.creatorHpPercent -= dmg;
-      }
-    }else if(battle.win == 0 && battle.dmg == 0){
-      this.getHit = 3;
-      setTimeout(()=>{
-        this.getHit = 0;    
-      }, 1000);       
-    }
+    // console.log(battle);
+
+    // this.enemyBgCounter += 1;
+    // if(this.enemyBgCounter == 3){
+    //   this.enemyBgCounter = 0;
+    // }
+    // this.getHit = battle.win;
+    // if(battle.win == 1){
+    //   this.totalHits += 1;
+    //   let dmg = this._dmgPercentCalc(battle.dmg,this.enemyHp);
+    //   if(dmg > this.enemyHpPercent){
+    //     this.enemyHpPercent = 0;
+    //   }else{
+    //     this.enemyHpPercent -= dmg;
+    //   }
+    // }else if(battle.win == 2){
+    //   let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
+    //   if(dmg > this.creatorHpPercent){
+    //     this.creatorHpPercent = 0;
+    //   }else{
+    //     this.creatorHpPercent -= dmg;
+    //   }
+    // }else if(battle.win == 0 && battle.dmg == 0){
+    //   this.getHit = 3;
+    //   setTimeout(()=>{
+    //     this.getHit = 0;    
+    //   }, 1000);       
+    // }
   
-    if(this.enemyHpPercent == 0){
-      this.totalWins += 1;
-      setTimeout(()=>{
-        let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
-        this.enemy = enmy;
-        this.enemyHp = enmy.hp;
-        this.enemyHpPercent = 100;
-        this.enemyCurrentAtk = false;
-        this.getHit = 0; 
-      }, 3000);
-    }else{
-      setTimeout(()=>{
-        this.getHit = 0;      
-      }, 1000); 
-    }
+    // if(this.enemyHpPercent == 0){
+    //   this.totalWins += 1;
+    //   setTimeout(()=>{
+    //     let enmy = this.enemyList[Math.floor(Math.random() * this.enemyList.length)];
+    //     this.enemy = enmy;
+    //     this.enemyHp = enmy.hp;
+    //     this.enemyHpPercent = 100;
+    //     this.enemyCurrentAtk = undefined;
+    //     this.getHit = 0; 
+    //   }, 3000);
+    // }else{
+    //   setTimeout(()=>{
+    //     this.getHit = 0;      
+    //   }, 1000); 
+    // }
   
   }
 
@@ -256,5 +255,4 @@ export class BattleComponent implements OnInit {
     window.location.reload();
   }
 
-  
 }
