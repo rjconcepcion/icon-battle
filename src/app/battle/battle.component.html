@@ -3,7 +3,7 @@
     <pre>Successful hits : {{totalHits}}</pre>
   </div>
   <div [ngClass]="['show-log',enableLog ? 'click' : '']" (click)="showLog()">Result : {{enableLog}}</div>
-  <app-loader [showloader]="showloader" [texty]="texty"></app-loader>
+  <app-loader [showloader]="showloader" [texty]="texty" [zIndex]="zIndex"></app-loader>
   <app-header [creator]="creator" ></app-header>
   <div [ngClass]="['container',(getHit==3) ? 'draw' : '']">
     <div class="row">
