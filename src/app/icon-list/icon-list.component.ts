@@ -13,9 +13,9 @@ import { CookieService } from 'ngx-cookie-service';
 export class IconListComponent implements OnInit {
 
   hero : any;
-
-  
-
+  searchTerm : string;
+  searching : boolean = false;
+  iconName : string;
   //Loading
   showloader :boolean = false;
   texty : string;
@@ -28,7 +28,7 @@ export class IconListComponent implements OnInit {
   page : number = 1;
   skip : number = 0;
 
-  searchedName : string = '';
+
   value : string = '';
   icons : Icon[];
 
@@ -81,8 +81,9 @@ export class IconListComponent implements OnInit {
         console.log(error);
       },
       () => {
-        this.searchedName = "";
+        this.searchTerm = "";
         this.showloader = false;
+        this.searching = false;
       }
     );
   }
@@ -91,6 +92,7 @@ export class IconListComponent implements OnInit {
     this.iconService.searchIcon(name).subscribe(
       icons => {
         this.icons = icons;
+        this.searching = true;
       }, 
       (error: any) => {
         console.log(error);
@@ -112,6 +114,7 @@ export class IconListComponent implements OnInit {
       rock:this.iconService.rand(4,9),
       paper:this.iconService.rand(4,9),
       scissor:this.iconService.rand(4,9),
+      creator:this.creator ? this.creator : this.readOnlyCreator,
     } as Icon)
     .subscribe((response: any) => {
       if(this.currentPage === 1){
@@ -148,7 +151,10 @@ export class IconListComponent implements OnInit {
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
         this.modalService.onHidden.subscribe((reason: string) => {
-          this.value = '';
+          this.iconName = '';
+          if(!this.creator){
+            this.readOnlyCreator = '';
+          }
         })
   }
   _setCreator () : void {

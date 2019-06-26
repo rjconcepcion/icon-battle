@@ -6,4 +6,5 @@ export class Icon {
     paper: number;
     scissor: number;
     fake_id: number;
+    creator: string;
 }
