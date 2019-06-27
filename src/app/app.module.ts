@@ -19,6 +19,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CookieService } from 'ngx-cookie-service';
 import { BattleComponent } from './battle/battle.component';
 import { HeroFormComponent } from './hero-form/hero-form.component';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HeroFormComponent } from './hero-form/hero-form.component';
     LoaderComponent,
     PaginationComponent,
     BattleComponent,
-    HeroFormComponent
+    HeroFormComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
