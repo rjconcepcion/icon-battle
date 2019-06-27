@@ -21,7 +21,7 @@
 		  </ul>
 		</div>
 	</nav>
-	<p *ngIf="creator"><a routerLink=""><i class='fa fa-user'></i> Hi {{creator}}</a></p>
+	<p *ngIf="creator"><a routerLink=""><i class='fa fa-user'></i> Hi {{creator.username}}</a></p>
 	<p *ngIf="!creator"><a routerLink="account"><i class='fa fa-user-plus'></i> Register</a></p>
 </div>
 				

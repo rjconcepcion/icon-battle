@@ -20,6 +20,9 @@ import { CookieService } from 'ngx-cookie-service';
 import { BattleComponent } from './battle/battle.component';
 import { HeroFormComponent } from './hero-form/hero-form.component';
 import { AccountComponent } from './account/account.component';
+import { PlayerComponent } from './player/player.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { AccountComponent } from './account/account.component';
     PaginationComponent,
     BattleComponent,
     HeroFormComponent,
-    AccountComponent
+    AccountComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +45,7 @@ import { AccountComponent } from './account/account.component';
     ModalModule.forRoot(),
     FormsModule,
     PaginationModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

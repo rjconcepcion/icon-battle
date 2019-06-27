@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { Player } from  '../player';
 
 @Component({
   selector: 'app-header',
@@ -8,17 +9,12 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() creator : string;
-
-
-
-
-  
+  @Input() creator : Player[];
 
   constructor(private cookieService: CookieService) { }
 
   ngOnInit() {
-    this.creator = this.cookieService.get('creator');
+    //this.creator = this.cookieService.get('creator');
   }
 
 }
