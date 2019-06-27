@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { IconListComponent } from './icon-list/icon-list.component';
 import { BattleComponent } from './battle/battle.component';
 import { HeroFormComponent } from './hero-form/hero-form.component';
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   { path: '', component: IconListComponent },
   { path: 'battle/:fakeIconId', component: BattleComponent },
-  { path: 'testing-component', component: HeroFormComponent }
+  { path: 'testing-component', component: HeroFormComponent },
+  { path: 'account', component: AccountComponent }
 ];
 
 @NgModule({
