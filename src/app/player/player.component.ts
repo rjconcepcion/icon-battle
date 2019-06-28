@@ -3,6 +3,10 @@ import { Player } from  '../player';
 import { PlayerService } from '../player.service';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { FormControl, FormGroup, FormBuilder, Validators, FormArray, NgControl } from '@angular/forms';
+
+
+
 
 @Component({
   selector: 'app-player',
@@ -11,9 +15,32 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class PlayerComponent implements OnInit {
 
+  playerForm = this.pf.group({
+    username : ['', {
+      validators : [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern('[a-zA-Z]*'),
+        this.banWords
+      ]
+    } ],
+    motto : [''],
+    password : ['', {
+      validators : [
+        Validators.required,
+      ]
+    } ],
+    password2 : ['', {
+      validators : [
+        Validators.required,
+      ]
+    } ]
+  });
+  
   constructor(
     private playerService: PlayerService,
     private route: ActivatedRoute,
+    private pf: FormBuilder,
   ) { }
 
   showloader = false;
@@ -22,22 +49,32 @@ export class PlayerComponent implements OnInit {
   player : any = {};
 
   ngOnInit() {
+
   }
 
   ngOnDestroy() {
-    console.log(this.creator);
+    //console.log(this.creator);
   }
 
   onSubmit() : void {
-    console.log(this.player);
-    this.playerService.addPlayer(this.player as Player)
-    .subscribe((response: any) => {
-      this.creator = response;
-    })
+    console.log(this.playerForm.value);
   }
 
   _rePasswordChecking() : boolean {
-    return this.player.password === this.player.password2 ? true : false;
+    return false;
+  }
+
+  banWords(control: FormGroup){
+
+    console.log(this.playerForm);
+    
+    let username = control.value;
+    if(username == 'sa'){
+      return {
+        banWords : 'You cant use that word'
+      }
+    }
+    return null;
   }
 
 }

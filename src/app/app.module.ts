@@ -22,6 +22,7 @@ import { HeroFormComponent } from './hero-form/hero-form.component';
 import { AccountComponent } from './account/account.component';
 import { PlayerComponent } from './player/player.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UniqueUsernameDirective } from './shared/unique-username.directive';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     BattleComponent,
     HeroFormComponent,
     AccountComponent,
-    PlayerComponent
+    PlayerComponent,
+    UniqueUsernameDirective
   ],
   imports: [
     BrowserModule,
