@@ -8,10 +8,7 @@
           <div class="form-group">
             <label for="exampleInputEmail1">Your Name</label>
             <input type="text" class="form-control" formControlName="username" appUniqueUsername>
-            <small class="form-text text-muted">Nick name or alias not full name, dont accept space and numbers.</small>
-            <div class="invalid-feedback" [class.test]="" [ngStyle]="{ 'display' : (playerForm.get('username').invalid && playerForm.get('username').touched )  ? 'block' : 'none' }">
-              Invalid Name
-            </div>           
+            <small class="form-text text-muted">Nick name or alias not full name, dont accept space and numbers.</small>           
           </div>                  
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Best motto in life</label>
@@ -20,11 +17,11 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" formControlName="password">        
+            <input type="password" class="form-control" formControlName="password">                
           </div>
           <div class="form-group">
             <label for="repassword">Re-Password</label>
-            <input type="password" class="form-control" formControlName="password2">        
+            <input type="password" class="form-control" formControlName="password2">                
           </div>  
           <button type="submit" class="btn btn-success" [disabled]="!playerForm.valid">Creat my account</button>     
           <!-- <div class="form-group">

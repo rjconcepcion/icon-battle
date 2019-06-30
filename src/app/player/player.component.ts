@@ -5,9 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray, NgControl } from '@angular/forms';
 
-
-
-
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -21,18 +18,20 @@ export class PlayerComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.pattern('[a-zA-Z]*'),
-        this.banWords
       ]
     } ],
     motto : [''],
     password : ['', {
       validators : [
         Validators.required,
+        Validators.minLength(6),
       ]
     } ],
     password2 : ['', {
       validators : [
         Validators.required,
+        Validators.minLength(6),
+        this.confirmPassword,
       ]
     } ]
   });
@@ -52,22 +51,20 @@ export class PlayerComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
-    //console.log(this.creator);
-  }
+  // ngOnDestroy() {
+  //   //console.log(this.creator);
+  // }
 
-  onSubmit() : void {
-    console.log(this.playerForm.value);
-  }
+  // onSubmit() : void {
+  //   console.log(this.playerForm.value);
+  // }
 
-  _rePasswordChecking() : boolean {
-    return false;
-  }
+  // _rePasswordChecking() : boolean {
+  //   return false;
+  // }
 
-  banWords(control: FormGroup){
+  banWords(control: FormControl){
 
-    console.log(this.playerForm);
-    
     let username = control.value;
     if(username == 'sa'){
       return {
@@ -75,6 +72,26 @@ export class PlayerComponent implements OnInit {
       }
     }
     return null;
+  }
+
+  confirmPassword(control : FormGroup) {
+    let password = control.root.get('password');
+    let password2 = control.value;
+
+
+
+    if(password != null){
+
+      if(password.value != password2){
+
+        return {
+          notMatch : {msg:'Password not match'}
+        }
+      }
+
+      return null;
+    }
+
   }
 
 }
