@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Player } from './player';
-
+import { CookieService } from 'ngx-cookie-service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class PlayerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private cookieService: CookieService, ) { }
 
   addPlayer (player: Player): Observable<Player> {
     const url = `${environment.endpoint}player`;
@@ -29,14 +29,22 @@ export class PlayerService {
     return this.http.get<Player[]>(url,httpOptions);
   }
 
-  // searchIcon (term: string): Observable<Player[]>{
-    
-  //   if (!term.trim()) {
-  //     const url = `${environment.endpoint}player`;
-  //     return this.http.get<Player[]>(url,httpOptions)
-  //   }
-    
-  //   return this.http.get<Player[]>(url,httpOptions)
-  // }
+  getCreator (_id : string): Observable<Player[]>{    
+    const url = `${environment.endpoint}player/${_id}`;
+    return this.http.get<Player[]>(url,httpOptions);
+  }
+
+  setCreator (_id : string) {
+    this.getCreator(_id).subscribe((response : any)=> {
+      this.cookieService.set('creator',JSON.stringify(response));
+    })
+  }
+
+  updateCreator (_id : string, player : Player): Observable<Player[]>{    
+    const url = `${environment.endpoint}player/${_id}`;
+    console.log(url);
+    console.log('player',player);
+    return this.http.put(url, player, httpOptions);
+  }
 
 }

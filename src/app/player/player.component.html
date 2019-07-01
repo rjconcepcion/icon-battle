@@ -4,22 +4,27 @@
 <div class="container">
   <div class="row justify-content-md-center">
     <div class="col-md-6 md-sm-12">
-        <form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="playerForm" (ngSubmit)="!creator ? onSubmit() : updateInfo()">
           <div class="alert alert-danger" role="alert" *ngIf="errors">
             <li *ngFor="let msg of errors_msg">{{ msg }}</li>
           </div>          
-          <div class="form-group">
+          <div class="form-group" *ngIf="!creator">
             <label for="exampleInputEmail1">Your Name</label>
-            <input type="text" class="form-control" formControlName="username" appUniqueUsername>
+            <input type="text" class="form-control" formControlName="username">
             <small class="form-text text-muted">Nick name or alias not full name, dont accept space and numbers.</small>           
-          </div>                  
+          </div>
+          <div class="form-group" *ngIf="creator">
+              <label for="exampleInputEmail1">Name</label>
+              <input type="text" class="form-control" [value]="creator.username" [disabled]="1">         
+            </div>                          
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Best motto in life</label>
             <textarea class="form-control" rows="3" name="motto" formControlName="motto"></textarea>
             <small class="form-text text-muted">Optional.</small>
           </div>
+         
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">{{ !creator ? 'Password' : 'New password' }}</label>
             <input type="password" [ngClass]="['form-control']" formControlName="password">
             <small class="form-text text-muted">Min of 6 characters.</small>                         
             <div class="invalid-feedback">
@@ -27,13 +32,14 @@
             </div>          
           </div>
           <div class="form-group">
-            <label for="repassword">Confirm password</label>
+              <label for="password">{{ !creator ? 'Confirm password' : 'Confirm new password' }}</label>
             <input type="password" [ngClass]="['form-control',playerForm?.controls.password2?.errors?.notMatch ? 'is-invalid' : '']" formControlName="password2">            
             <div class="invalid-feedback">
               Confirm password doesnt match.
             </div>            
           </div>  
-          <button type="submit" class="btn btn-success" [disabled]="!playerForm.valid">Creat my account</button>
+          <button *ngIf="!creator" type="submit" class="btn btn-success" [disabled]="!playerForm.valid">Creat my account</button>
+          <button *ngIf="creator" class="btn btn-success">Update my account</button>
         </form>
     </div>
   </div>

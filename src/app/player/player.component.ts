@@ -19,6 +19,7 @@ export class PlayerComponent implements OnInit {
   errors : boolean = false;
   errors_msg = [];
   usernameExist : boolean;
+  creator : Player[];
 
   playerForm = this.pf.group({
     username : ['', {
@@ -49,40 +50,69 @@ export class PlayerComponent implements OnInit {
     private iconService: IconService,    
     private route: ActivatedRoute,
     private pf: FormBuilder,
+    private cookieService: CookieService,    
   ) { }
 
   ngOnInit() {
-
+    if(this.cookieService.check('creator')){
+      this.creator = JSON.parse(this.cookieService.get('creator'));
+      console.log(this.creator)
+    }
   }
 
-  onSubmit() : void {
+  updateInfo() : void {
 
-    let username = this.playerForm.get('username').value;
-    this.errors =  false;
-    this.showloader = true;
-    this.texty = "Validating the uniqueness of the name..";
-    this.playerService.findPlayer(username)
-    .subscribe((response : any)=>{
+    
+    
+    // let password = this.playerForm.get('password').value;
+    // let password2 = this.playerForm.get('password2').value;
 
-      if(!response.length){
-        this.texty = "Creating your account...";
-        this.playerService.addPlayer(this.playerForm.value as Player)
-        .subscribe((response: any) => {
-          this.showloader = false;
-        },(error)=>{
-          console.log(error);
-        })
+    // if(password != ""){
+    //   if((password != password2) || this.playerForm.get('password').invalid){
+    //     console.log('invalid password');
+    //   }
+    // }
 
-      }else{
-        
-        this.errors_msg = ["The name " + username + " is already exist, please try a unique name"];
-        this.errors = true;
-        this.showloader = false;
-      }
-    },(error)=>{
-
+    // console.log();
+    // console.log();
+    let obj = {
+      'motto' : this.playerForm.get('motto').value
+    }
+    this.playerService.updateCreator(this.creator['_id'],this.playerForm.value as Player).subscribe((response : any) => {
+      console.log(response);
     });
+
   }
+
+
+  // onSubmit() : void {
+  //   let username = this.playerForm.get('username').value;
+  //   this.errors =  false;
+  //   this.showloader = true;
+  //   this.texty = "Validating the uniqueness of the name..";
+  //   this.playerService.findPlayer(username)
+  //   .subscribe((response : any)=>{
+  //     if(!response.length){
+  //       this.texty = "Creating your account...";
+  //       this.playerService.addPlayer(this.playerForm.value as Player)
+  //       .subscribe((response: any) => {
+  //         this.texty = "logging....";
+  //         this.creator = response;          
+  //         this.playerService.setCreator(response._id);          
+  //       },(error)=>{
+  //         console.log(error);
+  //       },()=>{
+  //         this.showloader = false;
+  //       })
+  //     }else{        
+  //       this.errors_msg = ["The name " + username + " is already exist, please try a unique name"];
+  //       this.errors = true;
+  //       this.showloader = false;
+  //     }
+  //   },(error)=>{
+
+  //   });
+  // }
 
 
   MatchPassword(control: AbstractControl) {
