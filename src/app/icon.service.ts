@@ -48,6 +48,15 @@ export class IconService {
   }
 
 
+  searchIconBy (field : string, value : any): Observable<Icon[]>{
+    const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&q={"${field}":"${value}"}&h={"$orderby": {"fake_id": -1}}`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  }
+  paginateIconsBy (field : string, value : any,skip : number): Observable<Icon[]> {
+    const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}&q={"${field}":"${value}"}`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  } 
+
   addIcon (icon: Icon): Observable<Icon> {
     const url = `${environment.endpoint}icon-list`;
     return this.http.post<Icon>(url, icon, httpOptions);

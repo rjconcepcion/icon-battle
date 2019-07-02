@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, Input, ViewChild  } from '@angular/core
 import { Router } from "@angular/router";
 import { CookieService } from 'ngx-cookie-service';
 import { Icon } from  '../Icon';
+import { Player } from  '../player';
 import { IconService } from '../icon.service';
 import { BattleService } from '../battle.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +22,7 @@ export class BattleComponent implements OnInit {
   texty : string;
   zIndex : string = "1040";
 
-  creator : string;
+  creator : Player;
   creatorIcon : string;
   creatorHp : number;
   creatorHpPercent : number = 100;
@@ -64,7 +65,7 @@ export class BattleComponent implements OnInit {
       this.creatorIcon = params.get('fakeIconId');
     });
     if(this.cookieService.check('creator')){
-      this.creator = this.cookieService.get('creator');
+      this.creator = JSON.parse(this.cookieService.get('creator'));
       this.setMyIcom();
     }
   }
@@ -86,7 +87,7 @@ export class BattleComponent implements OnInit {
 
   setCreator(name: string) : void {
     this.cookieService.set( 'creator', name );
-    this.creator = this.cookieService.get('creator');
+    this.creator = JSON.parse(this.cookieService.get('creator')['username']);
     window.location.reload();
   }
 

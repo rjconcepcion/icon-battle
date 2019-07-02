@@ -1,9 +1,11 @@
 import { Component, OnInit, TemplateRef, Input } from '@angular/core';
 import { Icon } from  '../Icon';
+import { Player } from  '../player';
 import { IconService } from '../icon.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+import { PlayerService } from '../player.service';
 
 @Component({
   selector: 'app-icon-list',
@@ -35,15 +37,12 @@ export class IconListComponent implements OnInit {
   modalRef: BsModalRef;
 
   candidate_creator : string = null;
-  creator : string = this.cookieService.check('creator') ? this.cookieService.get('creator') : null;
-  readOnlyCreator : string = this.cookieService.check('creator') ? this.cookieService.get('creator') : null;
+  creator : Player = this.cookieService.check('creator') ? JSON.parse(this.cookieService.get('creator')) : null;
+  readOnlyCreator : string;
 
-
-  constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService) { }
+  constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService,private playerService: PlayerService) { }
   
-  ngOnInit() {
-    
-    
+  ngOnInit() {  
     this.getIcons();  
   }
   
@@ -103,31 +102,47 @@ export class IconListComponent implements OnInit {
     );
   }
 
-  add(name: string,creator: string = null): void {
+  add(name: string) {
     this.showloader = true;
-    if(this.currentPage > 1){
-      this.currentPage = 1;
+    if(!this.creator){
+      this.texty = "Checking if name exist..";
     }
-    this.iconService.addIcon({
-      name : name.trim(),
-      hp: this.iconService.rand(8,10),
-      rock:this.iconService.rand(4,9),
-      paper:this.iconService.rand(4,9),
-      scissor:this.iconService.rand(4,9),
-      creator:this.creator ? this.creator : this.readOnlyCreator,
-    } as Icon)
-    .subscribe((response: any) => {
-      if(this.currentPage === 1){
-        this.icons.unshift(response);
-        this.icons.pop();
+    this.playerService.findPlayer(this.readOnlyCreator).subscribe((response : any)=> {
+      if(response.length){                
+        this.texty = "The name exist, please think another name...";
+        setTimeout(()=>{
+          this.showloader = false;  
+        }, 1000);        
+      }else{
+        this.texty = "Saving your icon..";
+        if(this.currentPage > 1){
+          this.currentPage = 1;
+        }
+        this.iconService.addIcon({
+          name : name.trim(),
+          hp: this.iconService.rand(8,10),
+          rock:this.iconService.rand(4,9),
+          paper:this.iconService.rand(4,9),
+          scissor:this.iconService.rand(4,9),
+          creator:this.creator ? this.creator['username'] : this.readOnlyCreator,
+        } as Icon)
+        .subscribe((response: any) => {
+          if(this.currentPage === 1){
+            this.icons.unshift(response);
+            this.icons.pop();
+          }
+          this.modalRef.hide()
+          this.totalItems += 1;
+          this.showloader = false;
+          this._setCreator();
+        })
       }
-      this.modalRef.hide()
-      this.totalItems += 1;
-      this.showloader = false;
-      this._setCreator();
-    })
+    });
   }  
-  
+//
+// Yesterday I continue my test angular app, also I fix issue in edit function.
+
+//
   delete(icon: Icon): void{
     this.showloader = true;
     this.texty = "Deleting the icon :-(";
@@ -159,9 +174,8 @@ export class IconListComponent implements OnInit {
   }
   _setCreator () : void {
     if(this.creator === null){
-      this.cookieService.set( 'creator', this.readOnlyCreator );
-      this.creator = this.cookieService.get('creator');
-      this.readOnlyCreator = this.creator; 
+      this.cookieService.set( 'creator', JSON.stringify({'username':this.readOnlyCreator}) );
+      this.creator = JSON.parse(this.cookieService.get('creator'));
     }
   }
 

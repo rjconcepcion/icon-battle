@@ -22,6 +22,9 @@ import { HeroFormComponent } from './hero-form/hero-form.component';
 import { PlayerComponent } from './player/player.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UniqueUsernameDirective } from './shared/unique-username.directive';
+import { MyIconsComponent } from './my-icons/my-icons.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -35,7 +38,9 @@ import { UniqueUsernameDirective } from './shared/unique-username.directive';
     BattleComponent,
     HeroFormComponent,
     PlayerComponent,
-    UniqueUsernameDirective
+    UniqueUsernameDirective,
+    MyIconsComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,8 @@ import { UniqueUsernameDirective } from './shared/unique-username.directive';
     ModalModule.forRoot(),
     FormsModule,
     PaginationModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TabsModule.forRoot()
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

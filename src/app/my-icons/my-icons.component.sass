@@ -4,30 +4,7 @@
     -ms-transition: $duration
     -o-transition: $duration
     transition: $duration
-#btn-controller
-    margin-bottom:40px    
-    .action-outer-wrap
-        display: flex
-        align-items: baseline
-        justify-content: space-between  
-        .search-wrap
-            display: flex
-            input
-                outline: none
-                border-top-right-radius: 0
-                border-bottom-right-radius: 0                
-                &:focus
-                    border: 1px solid #ced4da
-                    box-shadow: none
-            button
-                border-top-left-radius: 0
-                border-bottom-left-radius: 0  
-                &:focus
-                    box-shadow: none
-            &.active
-                .btn-success
-                    border-radius: 0  
-
+    
 .character
     position: relative
     margin:25px 0
@@ -82,19 +59,31 @@
             justify-content: space-evenly
             flex-flow: column        
             @include transition(.3s)
-        // &:hover
-        //     .player-icon
-        //         filter: blur(3px)
-        //     .stats-wrap
-        //         filter: blur(3px)
-        //     .fllr
-        //         opacity: 1
+        &:hover
+            .player-icon
+                filter: blur(3px)
+            .stats-wrap
+                filter: blur(3px)
+            .fllr
+                opacity: 1
+.no-warrior
+    display: flex
+    position: fixed
+    background: #000
+    top: 61px
+    left: 0
+    right: 0
+    bottom: 0
+    align-items: center
+    justify-content: center
 
+    @include transition(.5s)
+    .first-msg
+        margin-top: -61px
+        text-align: center
+        pre
+            color:#fff
 #paginate
     display: flex
     justify-content: center
     margin-top: 30px
-
-.hiddenx
-    opacity: 0
-    cursor: default !important

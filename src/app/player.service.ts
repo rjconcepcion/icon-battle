@@ -25,7 +25,7 @@ export class PlayerService {
   }
 
   findPlayer (username: any): Observable<Player[]>{    
-    const url = `${environment.endpoint}player?q={"username":"${username.trim()}"}`;
+    const url = `${environment.endpoint}player?q={"username":"${username}"}`;
     return this.http.get<Player[]>(url,httpOptions);
   }
 
@@ -40,11 +40,13 @@ export class PlayerService {
     })
   }
 
+  setCreatorInCookie (player : Player) {
+    this.cookieService.set('creator',JSON.stringify(player));
+  }
+
   updateCreator (_id : string, player : Player): Observable<Player[]>{    
     const url = `${environment.endpoint}player/${_id}`;
-    console.log(url);
-    console.log('player',player);
-    return this.http.put(url, player, httpOptions);
+    return this.http.put<Player[]>(url, player, httpOptions);
   }
 
 }

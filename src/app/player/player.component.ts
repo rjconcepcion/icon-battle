@@ -56,63 +56,77 @@ export class PlayerComponent implements OnInit {
   ngOnInit() {
     if(this.cookieService.check('creator')){
       this.creator = JSON.parse(this.cookieService.get('creator'));
-      console.log(this.creator)
     }
   }
 
-  updateInfo() : void {
+  updateInfo()  {
 
+    this.errors =  false;
     
-    
-    // let password = this.playerForm.get('password').value;
-    // let password2 = this.playerForm.get('password2').value;
+    let password = this.playerForm.get('password').value;
+    let password2 = this.playerForm.get('password2').value;
+    let changePasswd : boolean = false;
+    let changeMotto : boolean =this.playerForm.get('motto').dirty;
 
-    // if(password != ""){
-    //   if((password != password2) || this.playerForm.get('password').invalid){
-    //     console.log('invalid password');
-    //   }
-    // }
+    if(password != ""){
+      if((password != password2) || this.playerForm.get('password').invalid){
+        this.errors_msg = ["Cant do update, invalid new password"];
+        this.errors = true;
+        return ;
+      }
+      changePasswd = true;
+    }
+    console.log(changePasswd);
+    console.log('y');
 
-    // console.log();
-    // console.log();
     let obj = {
-      'motto' : this.playerForm.get('motto').value
+      'motto' : changeMotto ? this.playerForm.get('motto').value : this.creator['motto'],
+      'password' : changePasswd ? this.playerForm.get('password').value : this.creator['password']
     }
-    this.playerService.updateCreator(this.creator['_id'],this.playerForm.value as Player).subscribe((response : any) => {
-      console.log(response);
-    });
 
+    if(changePasswd || changeMotto){
+      this.showloader = true;
+      this.playerService.updateCreator(this.creator['_id'],obj as Player).subscribe((player : any) => {        
+        this.playerService.setCreatorInCookie(player);
+        this.showloader = false;
+        window.location.reload();
+      });
+    }
   }
 
 
-  // onSubmit() : void {
-  //   let username = this.playerForm.get('username').value;
-  //   this.errors =  false;
-  //   this.showloader = true;
-  //   this.texty = "Validating the uniqueness of the name..";
-  //   this.playerService.findPlayer(username)
-  //   .subscribe((response : any)=>{
-  //     if(!response.length){
-  //       this.texty = "Creating your account...";
-  //       this.playerService.addPlayer(this.playerForm.value as Player)
-  //       .subscribe((response: any) => {
-  //         this.texty = "logging....";
-  //         this.creator = response;          
-  //         this.playerService.setCreator(response._id);          
-  //       },(error)=>{
-  //         console.log(error);
-  //       },()=>{
-  //         this.showloader = false;
-  //       })
-  //     }else{        
-  //       this.errors_msg = ["The name " + username + " is already exist, please try a unique name"];
-  //       this.errors = true;
-  //       this.showloader = false;
-  //     }
-  //   },(error)=>{
+  onSubmit() : void {
+    let username = this.playerForm.get('username').value;
+    this.errors =  false;
+    this.showloader = true;
+    this.texty = "Validating the uniqueness of the name..";
+    this.playerService.findPlayer(username)
+    .subscribe((response : any)=>{
+      if(!response.length){
+        this.texty = "Creating your account...";
+        this.playerService.addPlayer(this.playerForm.value as Player)
+        .subscribe((response: any) => {
+          this.texty = "logging....";
+          this.creator = response;          
+          this.playerService.setCreator(response._id);
+          this.playerForm.get('password').setValue('');
+          this.playerForm.get('password2').setValue('');
+        },(error)=>{
+          console.log(error);
+        },()=>{
+          setTimeout(()=>{
+            this.showloader = false;   
+          }, 1000); 
+        })
+      }else{        
+        this.errors_msg = ["The name " + username + " is already exist, please try a unique name"];
+        this.errors = true;
+        this.showloader = false;
+      }
+    },(error)=>{
 
-  //   });
-  // }
+    });
+  }
 
 
   MatchPassword(control: AbstractControl) {

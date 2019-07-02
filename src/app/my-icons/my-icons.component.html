@@ -1,0 +1,93 @@
+<app-loader [showloader]="showloader" [texty]="texty" [zIndex]="zIndex"></app-loader>
+<app-header [creator]="creator" ></app-header>
+
+<div class="container" *ngIf="!noIcon">
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-success" (click)="openModal(template)">CREATE ICON</button>
+      <!-- <button type="button" class="btn btn-success" (click)="add()">CREATE ICON</button> -->
+    </div>
+  </div>
+  <div class="row" [ngStyle]="{'margin-top':'40px'}">
+      <div *ngFor="let icon of icons" class="character col-md-r col-sm-3">
+          <div class="inner-wrap">
+            <div class="player-icon">
+                <i class="fa {{icon.name}}" aria-hidden="true"></i>
+                <pre>{{icon.name}}</pre>
+            </div>
+            <div class="stats-wrap">
+              <p>
+                <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                <span class="bar">
+                    <div class="bar-content" [ngStyle]="{ 'width': icon.hp + '0%'}"></div>
+                </span>          
+              </p>
+              <p>
+                <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
+                <span class="bar">
+                    <div class="bar-content" [ngStyle]="{ 'width': icon.rock + '0%'}"></div>
+                </span>
+              </p>
+              <p>
+                <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
+                <span class="bar">
+                    <div class="bar-content" [ngStyle]="{ 'width': icon.paper + '0%'}"></div>
+                </span>          
+              </p>          
+              <p>
+                <i class="fa fa-hand-scissors-o" aria-hidden="true"></i>
+                <span class="bar">
+                    <div class="bar-content" [ngStyle]="{ 'width': icon.scissor + '0%'}"></div>
+                </span>
+              </p>
+            </div>
+            <div class="fllr">
+              <button class="btn btn-success" [routerLink]="['/battle', icon.fake_id]">SELECT</button>
+              <button class="btn btn-danger" (click)="delete(icon)">DELETE</button>
+            </div>          
+          </div>
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-md-12">
+      <div id="paginate" *ngIf="!searching">
+        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>  
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div class="no-warrior" *ngIf="noIcon">
+  <div class="first-msg">
+      <pre>First you need to create an icon.</pre>
+      <button class="btn btn-success" type="button" (click)="openModal(template)">CREATE MY FIRST ICON!!</button>
+  </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create Icon</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group" [ngStyle]="{'display':creator? 'none' : ''}">
+        <label for="disabledTextInput">Enter your name!</label>
+        <input type="text" class="form-control" id="readOnlyCreator" [(ngModel)]="readOnlyCreator" name="readOnlyCreator" #readOnlyCreatorRef="ngModel" [disabled]='creator' minlength="3" pattern="[a-zA-Z]*" required>  
+        <small class="form-text text-muted">Name is required before you fight!</small>
+        <small class="form-text text-muted">Letters only min of 3 characters</small>    
+      </div>
+      <div class="form-group">
+        <label for="disabledTextInput">Font awsome icon code (ex: fa-bug)</label>
+        <input type="text" class="form-control" id="iconName" [(ngModel)]="iconName" name="iconName" #iconNameRef="ngModel" required>
+        <small id="emailHelp" class="form-text text-muted"><a href="https://fontawesome.com/v4.7.0/icons/#web-application" target="_blank">Click here for more font awsome icon code.</a></small>
+        <small id="emailHelp" class="form-text text-muted">Icon stats are random from 1 to 10.</small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modalRef.hide()">Close</button>
+      <button type="button" class="btn btn-success" (click)="add(iconName)" [disabled]="readOnlyCreatorRef.invalid || iconNameRef.invalid" >Save changes</button>
+    </div>  
+  </ng-template>
+
