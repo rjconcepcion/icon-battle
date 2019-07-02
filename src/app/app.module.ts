@@ -25,6 +25,7 @@ import { UniqueUsernameDirective } from './shared/unique-username.directive';
 import { MyIconsComponent } from './my-icons/my-icons.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AboutComponent } from './about/about.component';
+import { IconDetailsComponent } from './icon-details/icon-details.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { AboutComponent } from './about/about.component';
     PlayerComponent,
     UniqueUsernameDirective,
     MyIconsComponent,
-    AboutComponent
+    AboutComponent,
+    IconDetailsComponent
   ],
   imports: [
     BrowserModule,

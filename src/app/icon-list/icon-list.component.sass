@@ -9,7 +9,7 @@
     .action-outer-wrap
         display: flex
         align-items: baseline
-        justify-content: space-between  
+        justify-content: flex-end 
         .search-wrap
             display: flex
             input
@@ -82,13 +82,13 @@
             justify-content: space-evenly
             flex-flow: column        
             @include transition(.3s)
-        // &:hover
-        //     .player-icon
-        //         filter: blur(3px)
-        //     .stats-wrap
-        //         filter: blur(3px)
-        //     .fllr
-        //         opacity: 1
+        &:hover
+            .player-icon
+                filter: blur(3px)
+            .stats-wrap
+                filter: blur(3px)
+            .fllr
+                opacity: 1
 
 #paginate
     display: flex

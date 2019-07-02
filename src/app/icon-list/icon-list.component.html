@@ -7,8 +7,6 @@
     <div class="row">
       <div class="col-md-12">
           <div class="action-outer-wrap">
-            
-            <button type="button" class="btn btn-success hiddenx">My Icons</button>
             <div class="search-wrap active">
               <input type="text" class="form-control" placeholder="Search icon name..." [(ngModel)]="searchTerm" #searchTermRef="ngModel" minlength="2" required>
               <button type="button" class="btn btn-success" (click)="findIcon(searchTerm)" [disabled]="searchTermRef.invalid">Search</button>
@@ -20,7 +18,8 @@
     </div>
 </div>
 
-
+<!-- 41419
+41416 -->
 <!-- MODAL -->
 <ng-template #template>
   <div class="modal-header">
@@ -84,10 +83,9 @@
               </span>
             </p>
           </div>
-          <!-- <div class="fllr">
-            <button class="btn btn-success" [routerLink]="['/battle', icon.fake_id]">SELECT</button>
-            <button class="btn btn-danger" (click)="delete(icon)">DELETE</button>
-          </div>           -->
+          <div class="fllr">
+            <button class="btn btn-success" (click)="Details(icon)">DETAILS</button>
+          </div>          
         </div>
     </div>
   </div>
