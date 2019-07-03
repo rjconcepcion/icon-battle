@@ -18,8 +18,9 @@ const httpOptions = {
 })
 export class IconService {
 
- // private iconUrl = 'https://ngsapp-446e.restdb.io/rest/icon-list';  // URL to web api
   constructor(private http: HttpClient) { }
+
+  testing_olny : string = "dark";
 
   paginateIcons (skip : number): Observable<Icon[]> {
     const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}`;
@@ -48,8 +49,12 @@ export class IconService {
   }
 
 
-  searchIconBy (field : string, value : any): Observable<Icon[]>{
-    const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&q={"${field}":"${value}"}&h={"$orderby": {"fake_id": -1}}`;
+  searchIconBy (field : string, value : any, dataType : string = "string"): Observable<Icon[]>{
+    let url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&q={"${field}":"${value}"}&h={"$orderby": {"fake_id": -1}}`;
+    if(dataType == 'number'){
+      url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&q={"${field}":${value}}&h={"$orderby": {"fake_id": -1}}`;
+    }
+
     return this.http.get<Icon[]>(url,httpOptions)
   }
   paginateIconsBy (field : string, value : any,skip : number): Observable<Icon[]> {

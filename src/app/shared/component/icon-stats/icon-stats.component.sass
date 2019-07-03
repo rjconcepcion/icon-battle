@@ -1,0 +1,39 @@
+@mixin transition($duration)
+    -webkit-transition: $duration
+    -moz-transition: $duration
+    -ms-transition: $duration
+    -o-transition: $duration
+    transition: $duration
+.player-icon
+    @include transition(.3s)
+    display: flex
+    flex-flow: column
+    align-items: center        
+    i
+        font-size: 130px
+    pre
+        margin-top: 13px
+        background-color: #ccc
+        display: inline-block
+        padding: 3px 5px     
+.stats-wrap
+    @include transition(.3s)
+    p
+        display: flex
+        justify-content: space-between
+        align-items: center            
+        margin-bottom: 3px
+        &:last-of-type 
+            margin-bottom:0
+        .bar
+            width: calc(100% - 40px)
+            background-color: #343a40
+            height: 15px
+            padding: 4px 3px
+            .bar-content
+                background: #fff
+                left: 4px
+                height: 100%
+                background-color: rgba(255, 255, 255, 0.5)
+        i
+            font-size: 26px

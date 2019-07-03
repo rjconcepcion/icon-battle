@@ -18,9 +18,6 @@
     </div>
 </div>
 
-<!-- 41419
-41416 -->
-<!-- MODAL -->
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Create Icon</h4>
@@ -53,38 +50,9 @@
   <div class="row">
     <div *ngFor="let icon of icons" class="character col-md-r col-sm-3">
         <div class="inner-wrap">
-          <div class="player-icon">
-              <i class="fa {{icon.name}}" aria-hidden="true"></i>
-              <pre><b>{{icon.creator+"'s"}}</b> {{icon.name}}</pre>
-          </div>
-          <div class="stats-wrap">
-            <p>
-              <i class="fa fa-heartbeat" aria-hidden="true"></i>
-              <span class="bar">
-                  <div class="bar-content" [ngStyle]="{ 'width': icon.hp + '0%'}"></div>
-              </span>          
-            </p>
-            <p>
-              <i class="fa fa-hand-rock-o" aria-hidden="true"></i>
-              <span class="bar">
-                  <div class="bar-content" [ngStyle]="{ 'width': icon.rock + '0%'}"></div>
-              </span>
-            </p>
-            <p>
-              <i class="fa fa-hand-paper-o" aria-hidden="true"></i>
-              <span class="bar">
-                  <div class="bar-content" [ngStyle]="{ 'width': icon.paper + '0%'}"></div>
-              </span>          
-            </p>          
-            <p>
-              <i class="fa fa-hand-scissors-o" aria-hidden="true"></i>
-              <span class="bar">
-                  <div class="bar-content" [ngStyle]="{ 'width': icon.scissor + '0%'}"></div>
-              </span>
-            </p>
-          </div>
+          <app-icon-stats name="{{icon.name}}" hp="{{icon.hp}}" rock="{{icon.rock}}" paper="{{icon.paper}}" scissor="{{icon.scissor}}" ></app-icon-stats>
           <div class="fllr">
-            <button class="btn btn-success" (click)="Details(icon)">DETAILS</button>
+            <button class="btn btn-success" [routerLink]="['/details', icon.fake_id]">DETAILS</button>
           </div>          
         </div>
     </div>

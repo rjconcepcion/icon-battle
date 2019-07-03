@@ -7,7 +7,7 @@ import { IconService } from '../icon.service';
 import { BattleService } from '../battle.service';
 import { ActivatedRoute } from '@angular/router';
 import { BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
-
+import { PlayerService } from '../player.service';
 
 @Component({
   selector: 'app-battle',
@@ -16,8 +16,8 @@ import { BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class BattleComponent implements OnInit {
 
-  totalWins : number = 0;
-  totalHits : number = 0; 
+  totalWins : number = 1;
+  totalHits : number = 3; 
   showloader :boolean = true;
   texty : string;
   zIndex : string = "1040";
@@ -57,7 +57,8 @@ export class BattleComponent implements OnInit {
     private iconService: IconService,
     private route: ActivatedRoute,
     private battleService: BattleService,
-    private router: Router
+    private router: Router,
+    private playerService: PlayerService
   ) { }
 
   ngOnInit() {
@@ -68,6 +69,8 @@ export class BattleComponent implements OnInit {
       this.creator = JSON.parse(this.cookieService.get('creator'));
       this.setMyIcom();
     }
+    this._updateScore();
+    console.log(this.creator);
   }
 
   ngAfterViewInit(){
@@ -86,9 +89,18 @@ export class BattleComponent implements OnInit {
   }
 
   setCreator(name: string) : void {
-    this.cookieService.set( 'creator', name );
-    this.creator = JSON.parse(this.cookieService.get('creator')['username']);
-    window.location.reload();
+    if(this.creator === undefined){
+      this.texty = "Checking if name exist..";
+      this.playerService.findPlayer(name).subscribe((response : any)=> {
+        if(!response.length){
+          this.cookieService.set( 'creator', JSON.stringify({'username':name}) );
+          this.creator = JSON.parse(this.cookieService.get('creator'));
+          window.location.reload();
+        }else{
+          this.texty = "The name '"+ name +"' exist, please think another name...";
+        }
+      });
+    }
   }
 
   setMyIcom() : void {
@@ -96,9 +108,21 @@ export class BattleComponent implements OnInit {
     this.texty = "Creating bonding between you and the selected icon.";
     this.iconService.searchIconById(this.creatorIcon).subscribe(
       (response : any) => {
-        this.icon = response[0];
-        this.creatorHp = response[0].hp;
-        this.searchEnemy();
+
+        if(!response.length){
+          alert("Invalid icon, why not create a icon");
+          this.router.navigate(['/my-icons']);          
+        }else{
+          this.icon = response[0];
+          this.creatorHp = response[0].hp;
+          if(this.icon['creator'] != this.creator['username']){
+            alert("Seem's you dont own this icon, much better if you create your own icon.");
+            this.router.navigate(['/my-icons']);
+          }
+          this.searchEnemy();
+        }
+
+
       },
       (error: any) => {
         console.log('error');
@@ -141,6 +165,9 @@ export class BattleComponent implements OnInit {
       let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
       if(dmg > this.creatorHpPercent){
         this.creatorHpPercent = 0;
+        
+        console.log(this._updateScore());
+
       }else{
         this.creatorHpPercent -= dmg;
       }
@@ -154,6 +181,24 @@ export class BattleComponent implements OnInit {
     this._setEnemyAttackBg();
     this._setNewOpponemt();
     this._resetHitCtr();
+  }
+
+  _updateScore() {
+    
+    let currentScore = this._calcScore();
+
+    if(currentScore > this.creator.score){
+      this.playerService.updateCreator(this.creator._id,{'score':currentScore} as Player).subscribe((player : any)=>{
+        this.playerService.setCreatorInCookie(player);
+      });
+    }
+
+  }
+
+  _calcScore () {
+    let wins : number = this.totalWins * 40;
+    let hits : number = this.totalHits * 2;
+    return wins + hits;
   }
 
   _dmgPercentCalc (value: number, total : number) : number {
@@ -194,7 +239,7 @@ export class BattleComponent implements OnInit {
     if(this.getHit == 1){
       result = "WIN";
     }else if(this.getHit == 2){
-      result = "LOOSE";
+      result = "LOSE";
     }else if(this.getHit == 3){
       result = "DRAW";
     }

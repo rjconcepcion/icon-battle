@@ -3,4 +3,5 @@ export class Player {
     username: string;
     password: number;
     motto: number;
+    score: number;
 }

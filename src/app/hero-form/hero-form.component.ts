@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, timer, Subscription } from 'rxjs';
 
-
-
-
 @Component({
   selector: 'app-hero-form',
   templateUrl: './hero-form.component.html',
   styleUrls: ['./hero-form.component.sass']
 })
-
-
-
 
 export class HeroFormComponent implements OnInit {
 
@@ -51,7 +45,4 @@ export class HeroFormComponent implements OnInit {
   onSubmit() {
     
   }
-
-
-  // get diagnostic() { return JSON.stringify(this.model); }
 }

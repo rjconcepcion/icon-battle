@@ -48,8 +48,6 @@ export class MyIconsComponent implements OnInit {
       this.creator = JSON.parse(this.cookieService.get('creator'));      
     }
     this.getIcons();
-
-    console.log(this.icons)
   }
 
   openModal(template: TemplateRef<any>) {

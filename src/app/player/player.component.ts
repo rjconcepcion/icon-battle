@@ -57,6 +57,7 @@ export class PlayerComponent implements OnInit {
     if(this.cookieService.check('creator')){
       this.creator = JSON.parse(this.cookieService.get('creator'));
     }
+    console.log(this.creator);
   }
 
   updateInfo()  {
@@ -76,8 +77,6 @@ export class PlayerComponent implements OnInit {
       }
       changePasswd = true;
     }
-    console.log(changePasswd);
-    console.log('y');
 
     let obj = {
       'motto' : changeMotto ? this.playerForm.get('motto').value : this.creator['motto'],
