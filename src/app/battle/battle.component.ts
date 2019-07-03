@@ -16,8 +16,8 @@ import { PlayerService } from '../player.service';
 })
 export class BattleComponent implements OnInit {
 
-  totalWins : number = 1;
-  totalHits : number = 3; 
+  totalWins : number = 0;
+  totalHits : number = 0; 
   showloader :boolean = true;
   texty : string;
   zIndex : string = "1040";
@@ -69,7 +69,6 @@ export class BattleComponent implements OnInit {
       this.creator = JSON.parse(this.cookieService.get('creator'));
       this.setMyIcom();
     }
-    this._updateScore();
     console.log(this.creator);
   }
 
@@ -93,7 +92,7 @@ export class BattleComponent implements OnInit {
       this.texty = "Checking if name exist..";
       this.playerService.findPlayer(name).subscribe((response : any)=> {
         if(!response.length){
-          this.cookieService.set( 'creator', JSON.stringify({'username':name}) );
+          this.cookieService.set( 'creator', JSON.stringify({'username':name,'score':'0'}) );
           this.creator = JSON.parse(this.cookieService.get('creator'));
           window.location.reload();
         }else{
@@ -165,9 +164,10 @@ export class BattleComponent implements OnInit {
       let dmg = this._dmgPercentCalc(battle.dmg,this.creatorHp);
       if(dmg > this.creatorHpPercent){
         this.creatorHpPercent = 0;
-        
-        console.log(this._updateScore());
 
+        this._updateScore();
+  
+        
       }else{
         this.creatorHpPercent -= dmg;
       }
@@ -184,14 +184,28 @@ export class BattleComponent implements OnInit {
   }
 
   _updateScore() {
-    
+     
     let currentScore = this._calcScore();
 
-    if(currentScore > this.creator.score){
-      this.playerService.updateCreator(this.creator._id,{'score':currentScore} as Player).subscribe((player : any)=>{
-        this.playerService.setCreatorInCookie(player);
-      });
+    console.log('here');
+
+    if(this.creator._id === undefined){
+
+
+
+
+      if(currentScore > this.creator.score){
+        this.creator.score = currentScore;
+        this.playerService.setCreatorInCookie(this.creator);
+      }
+    }else{
+      if(currentScore > this.creator.score){
+        this.playerService.updateCreator(this.creator._id,{'score':currentScore} as Player).subscribe((player : any)=>{
+          this.playerService.setCreatorInCookie(player);
+        });
+      }   
     }
+
 
   }
 

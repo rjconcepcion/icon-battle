@@ -103,7 +103,8 @@ export class PlayerComponent implements OnInit {
     .subscribe((response : any)=>{
       if(!response.length){
         this.texty = "Creating your account...";
-        this.playerService.addPlayer(this.playerForm.value as Player)
+        let clone = Object.assign({'score':0}, this.playerForm.value);
+        this.playerService.addPlayer(clone as Player)
         .subscribe((response: any) => {
           this.texty = "logging....";
           this.creator = response;          

@@ -48,6 +48,7 @@ export class MyIconsComponent implements OnInit {
       this.creator = JSON.parse(this.cookieService.get('creator'));      
     }
     this.getIcons();
+    console.log(this.creator);
   }
 
   openModal(template: TemplateRef<any>) {
@@ -107,7 +108,7 @@ export class MyIconsComponent implements OnInit {
 
   _setCreator () : void {
     if(this.creator === undefined){
-      this.cookieService.set( 'creator', JSON.stringify({'username':this.readOnlyCreator}) );
+      this.cookieService.set( 'creator', JSON.stringify({'username':this.readOnlyCreator,'score':'0'}) );
       this.creator = JSON.parse(this.cookieService.get('creator'));
     }
   }

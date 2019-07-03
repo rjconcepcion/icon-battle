@@ -27,6 +27,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AboutComponent } from './about/about.component';
 import { IconDetailsComponent } from './icon-details/icon-details.component';
 import { IconStatsComponent } from './shared/component/icon-stats/icon-stats.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { IconStatsComponent } from './shared/component/icon-stats/icon-stats.com
     MyIconsComponent,
     AboutComponent,
     IconDetailsComponent,
-    IconStatsComponent
+    IconStatsComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,
