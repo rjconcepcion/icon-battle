@@ -30,7 +30,8 @@
                 <pre>DEFEATED</pre>
                 <pre>Total Wins : {{totalWins}}</pre>
                 <pre>Successful hits : {{totalHits}}</pre>
-                <button class="btn btn-success">OK</button>
+                <pre>Score : {{_calcScore ()}}</pre>
+                <button  routerLink="/ranking" class="btn btn-success">OK</button>
               </div>          
               <span [ngClass]="[
                 'fa',

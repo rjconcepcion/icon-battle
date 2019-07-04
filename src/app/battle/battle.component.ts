@@ -17,7 +17,7 @@ import { PlayerService } from '../player.service';
 export class BattleComponent implements OnInit {
 
   totalWins : number = 0;
-  totalHits : number = 0; 
+  totalHits : number = 0;
   showloader :boolean = true;
   texty : string;
   zIndex : string = "1040";
@@ -37,7 +37,7 @@ export class BattleComponent implements OnInit {
   enemyAttackPosition = [
     ['10px', '33px'],
     ['100px', '33px'],
-    ['55px', '97px'],      
+    ['55px', '97px'],
   ];
   enemyBgCounter : number = 0;
 
@@ -51,7 +51,7 @@ export class BattleComponent implements OnInit {
   template : any;
 
   @ViewChild('autoShownModal', { static: false }) autoShownModal: ModalDirective;
- 
+
   constructor(
     private cookieService: CookieService,
     private iconService: IconService,
@@ -69,12 +69,11 @@ export class BattleComponent implements OnInit {
       this.creator = JSON.parse(this.cookieService.get('creator'));
       this.setMyIcom();
     }
-    console.log(this.creator);
   }
 
   ngAfterViewInit(){
     if(!this.cookieService.check('creator')){
-      
+
       this.autoShownModal.show()
       this.modalHide = this.autoShownModal.onHidden.subscribe((reason: string) => {
         this.autoShownModal.show();
@@ -84,7 +83,7 @@ export class BattleComponent implements OnInit {
   ngOnDestroy() {
     if(this.modalHide){
       this.modalHide.unsubscribe();
-    }    
+    }
   }
 
   setCreator(name: string) : void {
@@ -110,7 +109,7 @@ export class BattleComponent implements OnInit {
 
         if(!response.length){
           alert("Invalid icon, why not create a icon");
-          this.router.navigate(['/my-icons']);          
+          this.router.navigate(['/my-icons']);
         }else{
           this.icon = response[0];
           this.creatorHp = response[0].hp;
@@ -130,7 +129,7 @@ export class BattleComponent implements OnInit {
   }
 
   searchEnemy() : void {
-    this.texty = "Searching your opponent icon";    
+    this.texty = "Searching your opponent icon";
     this.battleService.enemiesList()
     .subscribe(
       (response : any) => {
@@ -166,16 +165,16 @@ export class BattleComponent implements OnInit {
         this.creatorHpPercent = 0;
 
         this._updateScore();
-  
-        
+
+
       }else{
         this.creatorHpPercent -= dmg;
       }
     }else if(battle.win == 0 && battle.dmg == 0){
       this.getHit = 3;
       setTimeout(()=>{
-        this.getHit = 0;    
-      }, 1000);       
+        this.getHit = 0;
+      }, 1000);
     }
 
     this._setEnemyAttackBg();
@@ -184,26 +183,21 @@ export class BattleComponent implements OnInit {
   }
 
   _updateScore() {
-     
     let currentScore = this._calcScore();
-
-    console.log('here');
-
     if(this.creator._id === undefined){
-
-
-
-
-      if(currentScore > this.creator.score){
+      if(currentScore > this.creator.score as unknown){
         this.creator.score = currentScore;
         this.playerService.setCreatorInCookie(this.creator);
       }
     }else{
       if(currentScore > this.creator.score){
+        this.showloader = true;
+        this.texty = "Checking your score...";
         this.playerService.updateCreator(this.creator._id,{'score':currentScore} as Player).subscribe((player : any)=>{
+          this.showloader = false;
           this.playerService.setCreatorInCookie(player);
         });
-      }   
+      }
     }
 
 
@@ -228,7 +222,7 @@ export class BattleComponent implements OnInit {
         this.enemyHp = enmy.hp;
         this.enemyHpPercent = 100;
         this.enemyCurrentAtk = undefined;
-        this.getHit = 0; 
+        this.getHit = 0;
       }, 3000);
     }
   }
@@ -236,8 +230,8 @@ export class BattleComponent implements OnInit {
   _resetHitCtr() : void {
     if(this.enemyHpPercent > 0){
       setTimeout(()=>{
-        this.getHit = 0;      
-      }, 1000); 
+        this.getHit = 0;
+      }, 1000);
     }
   }
 
@@ -245,7 +239,7 @@ export class BattleComponent implements OnInit {
     this.enemyBgCounter += 1;
     if(this.enemyBgCounter == 3){
       this.enemyBgCounter = 0;
-    }    
+    }
   }
 
   battleLog() : any {
@@ -292,7 +286,7 @@ export class BattleComponent implements OnInit {
    * NGX BOOTSTRAP MODAL FN
    */
   hideModal() : void {
-    this.autoShownModal.hide();  
+    this.autoShownModal.hide();
   }
 
 }

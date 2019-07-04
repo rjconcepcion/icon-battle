@@ -10,18 +10,23 @@ import { PlayerService } from '../player.service';
 })
 export class RankingComponent implements OnInit {
 
-	showloader = false;
+	showloader : boolean;
 	creator : Player;
+  players : Player[];
 
   constructor(
-private cookieService: CookieService,
-private playerService: PlayerService
-  	) { }
+    private cookieService: CookieService,
+    private playerService: PlayerService
+  ) { }
 
   ngOnInit() {
     if(this.cookieService.check('creator')){
-      this.creator = JSON.parse(this.cookieService.get('creator'));      
-    }  	
+      this.creator = JSON.parse(this.cookieService.get('creator'));
+    }
+    this.playerService.playerRank().subscribe((response : any)=>{
+      this.players = response;
+      this.showloader = false;
+    });
   }
 
 }

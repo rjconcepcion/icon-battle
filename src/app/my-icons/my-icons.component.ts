@@ -22,7 +22,7 @@ export class MyIconsComponent implements OnInit {
 
   noIcon : boolean = false;
   iconName : string;
-  
+
   // Pagination
   totalItems : number = 0;
   maxSize : number;
@@ -37,7 +37,7 @@ export class MyIconsComponent implements OnInit {
     private iconService: IconService,
     private modalService: BsModalService,
     private cookieService: CookieService,
-    private playerService: PlayerService    
+    private playerService: PlayerService
   ) { }
 
 
@@ -45,10 +45,9 @@ export class MyIconsComponent implements OnInit {
   ngOnInit() {
 
     if(this.cookieService.check('creator')){
-      this.creator = JSON.parse(this.cookieService.get('creator'));      
+      this.creator = JSON.parse(this.cookieService.get('creator'));
     }
     this.getIcons();
-    console.log(this.creator);
   }
 
   openModal(template: TemplateRef<any>) {
@@ -67,11 +66,11 @@ export class MyIconsComponent implements OnInit {
       this.texty = "Checking if name exist..";
     }
     this.playerService.findPlayer(this.readOnlyCreator).subscribe((response : any)=> {
-      if(response.length){                
+      if(response.length){
         this.texty = "The name exist, please think another name...";
         setTimeout(()=>{
-          this.showloader = false;  
-        }, 1000);        
+          this.showloader = false;
+        }, 1000);
       }else{
         this.texty = "Saving your icon..";
         if(this.currentPage > 1){
@@ -93,7 +92,7 @@ export class MyIconsComponent implements OnInit {
             this.icons.push(response);
           }else{
             this.icons.unshift(response);
-          } 
+          }
           this.totalItems += 1;
           if(this.currentPage === 1 && this.totalItems > 8){
             this.icons.pop();
@@ -104,7 +103,7 @@ export class MyIconsComponent implements OnInit {
         })
       }
     });
-  } 
+  }
 
   _setCreator () : void {
     if(this.creator === undefined){
@@ -118,7 +117,7 @@ export class MyIconsComponent implements OnInit {
       this.noIcon = false;
       this.showloader = true;
       this.iconService.searchIconBy('creator',this.creator['username']).subscribe((response : any)=>{
-        
+
         if(!response.data.length){
           this.noIcon = true;
         }
@@ -141,7 +140,6 @@ export class MyIconsComponent implements OnInit {
     this.iconService.paginateIconsBy('creator',this.creator['username'],this.skip)
     .subscribe(
       (response: any) =>{
-        console.log(response);
         this.icons = response.data;
         this.totalItems = response.totals.total;
         this.itemsPerPage = environment.maxIcon;
@@ -159,10 +157,10 @@ export class MyIconsComponent implements OnInit {
     this.iconService.deleteIcon(icon).subscribe(
       (response: any) =>{
         this.texty = "Arranging icon list & pagination...";
-        this.iconService.paginateIconsBy('creator',this.creator['username'],this.skip).subscribe((response: any)=>{          
+        this.iconService.paginateIconsBy('creator',this.creator['username'],this.skip).subscribe((response: any)=>{
           this.icons = this.icons.filter(h => h !== icon);
           this.totalItems -= 1;
-          this.itemsPerPage = environment.maxIcon;          
+          this.itemsPerPage = environment.maxIcon;
           this.icons = response.data;
           this.showloader = false;
           this.texty = '';
@@ -170,7 +168,7 @@ export class MyIconsComponent implements OnInit {
             this.noIcon = true;
           }
         });
-      },   
+      },
       (error: any) => {
         console.log(error);
       }

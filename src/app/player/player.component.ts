@@ -33,7 +33,7 @@ export class PlayerComponent implements OnInit {
     password : ['', {
       validators : [
         Validators.required,
-        Validators.minLength(6),   
+        Validators.minLength(6),
       ]
     } ],
     password2 : ['', {
@@ -44,26 +44,32 @@ export class PlayerComponent implements OnInit {
       ]
     } ]
   });
-  
+
   constructor(
     private playerService: PlayerService,
-    private iconService: IconService,    
+    private iconService: IconService,
     private route: ActivatedRoute,
     private pf: FormBuilder,
-    private cookieService: CookieService,    
+    private cookieService: CookieService,
   ) { }
+
+
+  loginForm = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+  });
 
   ngOnInit() {
     if(this.cookieService.check('creator')){
       this.creator = JSON.parse(this.cookieService.get('creator'));
     }
-    console.log(this.creator);
+
   }
 
   updateInfo()  {
 
     this.errors =  false;
-    
+
     let password = this.playerForm.get('password').value;
     let password2 = this.playerForm.get('password2').value;
     let changePasswd : boolean = false;
@@ -85,7 +91,7 @@ export class PlayerComponent implements OnInit {
 
     if(changePasswd || changeMotto){
       this.showloader = true;
-      this.playerService.updateCreator(this.creator['_id'],obj as Player).subscribe((player : any) => {        
+      this.playerService.updateCreator(this.creator['_id'],obj as Player).subscribe((player : any) => {
         this.playerService.setCreatorInCookie(player);
         this.showloader = false;
         window.location.reload();
@@ -103,11 +109,11 @@ export class PlayerComponent implements OnInit {
     .subscribe((response : any)=>{
       if(!response.length){
         this.texty = "Creating your account...";
-        let clone = Object.assign({'score':0}, this.playerForm.value);
+        let clone = Object.assign({'score':this.creator['score'] ? this.creator['score'] : 0}, this.playerForm.value);
         this.playerService.addPlayer(clone as Player)
         .subscribe((response: any) => {
           this.texty = "logging....";
-          this.creator = response;          
+          this.creator = response;
           this.playerService.setCreator(response._id);
           this.playerForm.get('password').setValue('');
           this.playerForm.get('password2').setValue('');
@@ -115,10 +121,10 @@ export class PlayerComponent implements OnInit {
           console.log(error);
         },()=>{
           setTimeout(()=>{
-            this.showloader = false;   
-          }, 1000); 
+            this.showloader = false;
+          }, 1000);
         })
-      }else{        
+      }else{
         this.errors_msg = ["The name " + username + " is already exist, please try a unique name"];
         this.errors = true;
         this.showloader = false;
@@ -144,8 +150,30 @@ export class PlayerComponent implements OnInit {
      }
  }
 
-  test(test : any) {
-    console.log(test);
-  }
-  
+
+
+ logout() {
+  this.cookieService.deleteAll();
+  this.creator = undefined;
+ }
+
+ login() {
+  this.showloader = true;
+  this.playerService.signIn(this.loginForm.get('username').value,this.loginForm.get('password').value).subscribe((response : any)=>{
+
+    if(response.length){
+      this.creator = response[0];
+      this.playerService.setCreatorInCookie(response[0]);
+    }else{
+      this.texty = "Username or Password not correct";
+    }
+    setTimeout(()=>{
+      this.showloader = false;
+    }, 2000);
+
+  });
+
+ }
+
+
 }

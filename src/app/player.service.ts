@@ -24,12 +24,12 @@ export class PlayerService {
     return this.http.post<Player>(url, player, httpOptions);
   }
 
-  findPlayer (username: any): Observable<Player[]>{    
+  findPlayer (username: any): Observable<Player[]>{
     const url = `${environment.endpoint}player?q={"username":"${username}"}`;
     return this.http.get<Player[]>(url,httpOptions);
   }
 
-  getCreator (_id : string): Observable<Player[]>{    
+  getCreator (_id : string): Observable<Player[]>{
     const url = `${environment.endpoint}player/${_id}`;
     return this.http.get<Player[]>(url,httpOptions);
   }
@@ -44,7 +44,17 @@ export class PlayerService {
     this.cookieService.set('creator',JSON.stringify(player));
   }
 
-  updateCreator (_id : string, player : Player): Observable<Player[]>{    
+  playerRank (): Observable<Player[]> {
+    const url = `${environment.endpoint}player?max=10&h={"$orderby": {"score": -1}}`;
+    return this.http.get<Player[]>(url,httpOptions)
+  }
+
+  signIn (username : string, password : string): Observable<Player[]> {
+    const url = `${environment.endpoint}player?q={"username":"${username}","password":"${password}"}`;
+    return this.http.get<Player[]>(url,httpOptions);
+  }
+
+  updateCreator (_id : string, player : Player): Observable<Player[]>{
     const url = `${environment.endpoint}player/${_id}`;
     return this.http.put<Player[]>(url, player, httpOptions);
   }

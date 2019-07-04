@@ -41,12 +41,11 @@ export class IconListComponent implements OnInit {
   readOnlyCreator : string;
 
   constructor(private iconService: IconService, private modalService: BsModalService,private cookieService: CookieService,private playerService: PlayerService) { }
-  
-  ngOnInit() {  
+
+  ngOnInit() {
     this.getIcons();
-    console.log(this.creator);
   }
-  
+
   // PAGINATION EVENTS
   pageChanged(event: any): void {
     this.showloader = true;
@@ -55,7 +54,6 @@ export class IconListComponent implements OnInit {
     this.iconService.paginateIcons(this.skip)
     .subscribe(
       (response: any) =>{
-        console.log(response);
         this.icons = response.data;
         this.totalItems = response.totals.total;
         this.itemsPerPage = environment.maxIcon;
@@ -66,7 +64,7 @@ export class IconListComponent implements OnInit {
       },
     );
   }
-  
+
 
   getIcons(): void {
     this.showloader = true;
@@ -93,7 +91,7 @@ export class IconListComponent implements OnInit {
       icons => {
         this.icons = icons;
         this.searching = true;
-      }, 
+      },
       (error: any) => {
         console.log(error);
       },
@@ -109,11 +107,11 @@ export class IconListComponent implements OnInit {
       this.texty = "Checking if name exist..";
     }
     this.playerService.findPlayer(this.readOnlyCreator).subscribe((response : any)=> {
-      if(response.length){                
+      if(response.length){
         this.texty = "The name exist, please think another name...";
         setTimeout(()=>{
-          this.showloader = false;  
-        }, 1000);        
+          this.showloader = false;
+        }, 1000);
       }else{
         this.texty = "Saving your icon..";
         if(this.currentPage > 1){
@@ -139,7 +137,7 @@ export class IconListComponent implements OnInit {
         })
       }
     });
-  }  
+  }
 //
 // Yesterday I continue my test angular app, also I fix issue in edit function.
 
@@ -150,15 +148,15 @@ export class IconListComponent implements OnInit {
     this.iconService.deleteIcon(icon).subscribe(
       (response: any) =>{
         this.texty = "Arranging icon list & pagination...";
-        this.iconService.paginateIcons(this.skip).subscribe((response: any)=>{          
+        this.iconService.paginateIcons(this.skip).subscribe((response: any)=>{
           this.icons = this.icons.filter(h => h !== icon);
           this.totalItems -= 1;
-          this.itemsPerPage = environment.maxIcon;          
+          this.itemsPerPage = environment.maxIcon;
           this.icons = response.data;
           this.showloader = false;
           this.texty = '';
         });
-      },   
+      },
       (error: any) => {
         console.log(error);
       }

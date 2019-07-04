@@ -7,37 +7,57 @@
         <form [formGroup]="playerForm" (ngSubmit)="!creator?._id ? onSubmit() : updateInfo()">
           <div class="alert alert-danger" role="alert" *ngIf="errors">
             <li *ngFor="let msg of errors_msg">{{ msg }}</li>
-          </div>          
+          </div>
           <div class="form-group" *ngIf="!creator?._id">
             <label for="exampleInputEmail1">Your Name</label>
-            <input type="text" class="form-control" formControlName="username" [placeholder]="creator?.username">
-            <small class="form-text text-muted">Nick name or alias not full name, dont accept space and numbers.</small>           
+            <input type="text" class="form-control" formControlName="username" [placeholder]="(creator?.username == null) ? '' : creator?.username">
+            <small class="form-text text-muted">Nick name or alias not full name, dont accept space and numbers.</small>
           </div>
           <div class="form-group" *ngIf="creator?._id">
               <label for="exampleInputEmail1">Name</label>
-              <input type="text" class="form-control" [value]="creator.username" [disabled]="1">         
-            </div>                          
+              <input type="text" class="form-control" [value]="creator.username" [disabled]="1">
+            </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Best motto in life</label>
             <textarea class="form-control" rows="3" name="motto" formControlName="motto" [value]="creator?.motto ? creator.motto : ''"></textarea>
             <small class="form-text text-muted">Optional.</small>
           </div>
-         
+
           <div class="form-group">
             <label for="password">{{ !creator?._id ? 'Password' : 'New password' }}</label>
             <input type="password" [ngClass]="['form-control']" formControlName="password">
-            <small class="form-text text-muted">Min of 6 characters.</small>        
+            <small class="form-text text-muted">Min of 6 characters.</small>
           </div>
           <div class="form-group">
               <label for="password">{{ !creator?._id ? 'Confirm password' : 'Confirm new password' }}</label>
-            <input type="password" [ngClass]="['form-control',playerForm?.controls.password2?.errors?.notMatch ? 'is-invalid' : '']" formControlName="password2">            
+            <input type="password" [ngClass]="['form-control',playerForm?.controls.password2?.errors?.notMatch ? 'is-invalid' : '']" formControlName="password2">
             <div class="invalid-feedback">
               Confirm password doesnt match.
-            </div>            
-          </div>  
+            </div>
+          </div>
           <button *ngIf="!creator?._id" type="submit" class="btn btn-success" [disabled]="!playerForm.valid">Creat my account</button>
-          <button *ngIf="creator?._id" class="btn btn-success">Update my account</button>
+          <button *ngIf="creator?._id" class="btn btn-success">Update my account</button>&nbsp;&nbsp;
+          <button *ngIf="creator?._id" type="btn" (click)="logout()" class="btn btn-warning">Logout</button>
         </form>
+    </div>
+    <div class="col-md-3" *ngIf="!creator?._id">
+      <h1>Login</h1>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" [ngClass]="['form-control']" formControlName="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" [ngClass]="['form-control']" formControlName="password" required>
+        </div>
+
+        <button class="btn btn-success" [disabled]="loginForm.invalid">Sign in</button>
+
+      </form>
+
     </div>
   </div>
 </div>

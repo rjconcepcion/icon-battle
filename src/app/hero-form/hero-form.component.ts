@@ -18,11 +18,11 @@ export class HeroFormComponent implements OnInit {
   // everySeconds : Observable<number> = timer(0,1000);
 
   private subscription: Subscription = new Subscription();
-  
+
   timer$: Observable<number> = timer(0,1000)
 
   ngOnInit() {
-    
+
   }
 
   ngOnDestroy() {
@@ -43,6 +43,6 @@ export class HeroFormComponent implements OnInit {
   log(val) {  }
 
   onSubmit() {
-    
+
   }
 }
