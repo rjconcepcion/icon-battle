@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+      <input type="text" placeholder="Search icon name" [(ngModel)]="filterText">
+      </div>
+      <div *ngFor="let icon of filteredIcons" class="character col-md-r col-sm-3">
+        <div class="inner-wrap">
+          <app-icon-stats name="{{icon.name}}" hp="{{icon.hp}}" rock="{{icon.rock}}" paper="{{icon.paper}}" scissor="{{icon.scissor}}" ></app-icon-stats>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <pagination [totalItems]="totalIcons" [itemsPerPage]="iconPerPage"></pagination>
+      </div>
+    </div>
+  </div>

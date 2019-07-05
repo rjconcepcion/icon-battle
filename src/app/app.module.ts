@@ -28,6 +28,8 @@ import { AboutComponent } from './about/about.component';
 import { IconDetailsComponent } from './icon-details/icon-details.component';
 import { IconStatsComponent } from './shared/component/icon-stats/icon-stats.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { ArchiveComponent } from './archive/archive.component';
+import { IconArchiveComponent } from './shared/component/icon-archive/icon-archive.component';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { RankingComponent } from './ranking/ranking.component';
     AboutComponent,
     IconDetailsComponent,
     IconStatsComponent,
-    RankingComponent
+    RankingComponent,
+    ArchiveComponent,
+    IconArchiveComponent
   ],
   imports: [
     BrowserModule,

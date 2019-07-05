@@ -6,10 +6,10 @@ import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    
+
     'Content-Type': 'application/json',
     'x-apikey': '5d0332d327bc5b75bfeb7c08',
-    
+
   })
 };
 
@@ -25,15 +25,20 @@ export class IconService {
   paginateIcons (skip : number): Observable<Icon[]> {
     const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}`;
     return this.http.get<Icon[]>(url,httpOptions)
-  } 
+  }
 
   getIcons (): Observable<Icon[]> {
     const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=0&h={"$orderby": {"fake_id": -1}}`;
     return this.http.get<Icon[]>(url,httpOptions)
-  } 
+  }
+
+  allIcons (): Observable<Icon[]> {
+    const url = `${environment.endpoint}icon-list`;
+    return this.http.get<Icon[]>(url,httpOptions)
+  }
 
   searchIcon (term: string): Observable<Icon[]>{
-    
+
     if (!term.trim()) {
       const url = `${environment.endpoint}icon-list`;
       return this.http.get<Icon[]>(url,httpOptions)
@@ -43,7 +48,7 @@ export class IconService {
   }
 
   searchIconById (fake_id: any): Observable<Icon[]>{
-    
+
     const url = `${environment.endpoint}icon-list?q={"fake_id":${fake_id}}`;
     return this.http.get<Icon[]>(url,httpOptions)
   }
@@ -60,7 +65,7 @@ export class IconService {
   paginateIconsBy (field : string, value : any,skip : number): Observable<Icon[]> {
     const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}&q={"${field}":"${value}"}`;
     return this.http.get<Icon[]>(url,httpOptions)
-  } 
+  }
 
   addIcon (icon: Icon): Observable<Icon> {
     const url = `${environment.endpoint}icon-list`;
@@ -70,7 +75,7 @@ export class IconService {
   deleteIcon (icon: Icon | string): Observable<Icon[]> {
     const id = typeof icon === 'string' ? icon : icon._id;
     const url = `${environment.endpoint}icon-list/${id}`;
-    
+
     return this.http.delete<Icon[]>(url, httpOptions);
   }
 
