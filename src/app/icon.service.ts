@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Icon } from './icon';
 import { Observable, of } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
@@ -21,6 +22,7 @@ export class IconService {
   constructor(private http: HttpClient) { }
 
   testing_olny : string = "dark";
+  handlerError : any;
 
   paginateIcons (skip : number): Observable<Icon[]> {
     const url = `${environment.endpoint}icon-list?totals=true&max=${environment.maxIcon}&skip=${skip}&h={"$orderby": {"fake_id": -1}}`;
@@ -32,8 +34,15 @@ export class IconService {
     return this.http.get<Icon[]>(url,httpOptions)
   }
 
+  urll = `${environment.endpoint}icon-list?h={"$orderby": {"fake_id": -1}}`;
+  icons$ = this.http.get<Icon[]>(this.urll,httpOptions)
+    .pipe(
+      tap(console.log),
+      catchError(this.handlerError)
+    );
+
   allIcons (): Observable<Icon[]> {
-    const url = `${environment.endpoint}icon-list`;
+    const url = `${environment.endpoint}icon-list?h={"$orderby": {"fake_id": -1}}`;
     return this.http.get<Icon[]>(url,httpOptions)
   }
 

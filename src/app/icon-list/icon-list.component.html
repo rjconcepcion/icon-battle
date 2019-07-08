@@ -11,7 +11,7 @@
               <input type="text" class="form-control" placeholder="Search icon name..." [(ngModel)]="searchTerm" #searchTermRef="ngModel" minlength="2" required>
               <button type="button" class="btn btn-success" (click)="findIcon(searchTerm)" [disabled]="searchTermRef.invalid">Search</button>
               <button type="button" class="btn btn-warning" (click)="getIcons()">Show all</button>
-            </div>            
+            </div>
           </div>
 
       </div>
@@ -28,9 +28,9 @@
   <div class="modal-body">
     <div class="form-group" [ngStyle]="{'display':creator? 'none' : ''}">
       <label for="disabledTextInput">Enter your name!</label>
-      <input type="text" class="form-control" id="readOnlyCreator" [(ngModel)]="readOnlyCreator" name="readOnlyCreator" #readOnlyCreatorRef="ngModel" [disabled]='creator' minlength="3" pattern="[a-zA-Z]*" required>  
+      <input type="text" class="form-control" id="readOnlyCreator" [(ngModel)]="readOnlyCreator" name="readOnlyCreator" #readOnlyCreatorRef="ngModel" [disabled]='creator' minlength="3" pattern="[a-zA-Z]*" required>
       <small class="form-text text-muted">Name is required before you fight!</small>
-      <small class="form-text text-muted">Letters only min of 3 characters</small>    
+      <small class="form-text text-muted">Letters only min of 3 characters</small>
     </div>
     <div class="form-group">
       <label for="disabledTextInput">Font awsome icon code (ex: fa-bug)</label>
@@ -42,7 +42,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modalRef.hide()">Close</button>
     <button type="button" class="btn btn-success" (click)="add(iconName)" [disabled]="readOnlyCreatorRef.invalid || iconNameRef.invalid" >Save changes</button>
-  </div>  
+  </div>
 </ng-template>
 
 <!-- LIST OF RECORDS -->
@@ -53,11 +53,11 @@
           <app-icon-stats name="{{icon.name}}" hp="{{icon.hp}}" rock="{{icon.rock}}" paper="{{icon.paper}}" scissor="{{icon.scissor}}" ></app-icon-stats>
           <div class="fllr">
             <button class="btn btn-success" [routerLink]="['/details', icon.fake_id]">DETAILS</button>
-          </div>          
+          </div>
         </div>
     </div>
   </div>
 </div>
 <div id="paginate" *ngIf="!searching">
-  <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>  
+  <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>
 </div>

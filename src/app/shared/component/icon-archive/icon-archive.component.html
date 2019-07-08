@@ -1,15 +1,55 @@
 <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-      <input type="text" placeholder="Search icon name" [(ngModel)]="filterText">
+  <div *ngIf="icons$ | async as icons">
+    <button *ngFor="let icon of icons">{{icon.name}}</button>
+  </div>
+</div>
+<!--
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="operations">
+        <button class="btn btn-success" (click)="openModal(template)">CREATE ICON</button>
+        <input type="text" class="form-control" placeholder="Search icon name" [(ngModel)]="filterText">
       </div>
-      <div *ngFor="let icon of filteredIcons" class="character col-md-r col-sm-3">
-        <div class="inner-wrap">
-          <app-icon-stats name="{{icon.name}}" hp="{{icon.hp}}" rock="{{icon.rock}}" paper="{{icon.paper}}" scissor="{{icon.scissor}}" ></app-icon-stats>
-        </div>
+    </div>
+    <div *ngFor="let icon of filteredIcons" class="character col-md-r col-sm-3">
+      <div class="inner-wrap">
+        <app-icon-stats name="{{icon.name}}" hp="{{icon.hp}}" rock="{{icon.rock}}" paper="{{icon.paper}}" scissor="{{icon.scissor}}" ></app-icon-stats>
       </div>
-      <div class="col-md-12">
-        <pagination [totalItems]="totalIcons" [itemsPerPage]="iconPerPage"></pagination>
+    </div>
+    <div class="col-md-12" *ngIf="showPage">
+      <div id="icon-pagination">
+        <pagination [(ngModel)]="currentPage" [totalItems]="totalIcons" [itemsPerPage]="iconPerPage" (pageChanged)="pageChanged($event)"></pagination>
       </div>
     </div>
   </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create Icon</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form [formGroup]="createIconForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="disabledTextInput">Enter your name!</label>
+            <input type="text" class="form-control" formControlName="creator">
+            <small class="form-text text-muted">Name is required before you fight!</small>
+            <small class="form-text text-muted">Letters only min of 3 characters</small>
+          </div>
+          <div class="form-group">
+            <label for="disabledTextInput">Font awsome icon code (ex: fa-bug)</label>
+            <input type="text" class="form-control" formControlName="name">
+            <small id="emailHelp" class="form-text text-muted"><a href="https://fontawesome.com/v4.7.0/icons/#web-application" target="_blank">Click here for more font awsome icon code.</a></small>
+            <small id="emailHelp" class="form-text text-muted">Icon stats are random from 1 to 10.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modalRef.hide()">Close</button>
+          <button type="submit" class="btn btn-success">Save changes</button>
+        </div>
+    </form>
+  </ng-template> --> -->
